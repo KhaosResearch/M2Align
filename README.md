@@ -27,7 +27,11 @@ mvn package
 This sentence will generate a directory called `target` which will contain a file called `jMetalMSA-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
 ## Runing MOSAStrE
-To run the algorithm, just run this command:
+To execute the algorithm to solve a problem in Balibase, just run this command:
 ````
-java -cp target/jMetalMSA-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.jmetalmsa.runner.MOSAStrERunner BalibaseProblem dataDirectory NumberOfEvaluations PopulationSize NumberOfCores
+java -cp target/jMetalMSA-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.jmetalmsa.runner.MOSAStrERunner balibaseProblemName dataDirectory NumberOfEvaluations PopulationSize NumberOfCores
 ```
+
+The output of the program are two files:
+* `VAR.tsv`: contains the Pareto front approximation. For each solution, this file contains a line with the values of the three objectives.
+* `FUN.tsv`: contains the Pareto set approximation. Each solution is represented in FASTA format.
