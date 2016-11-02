@@ -9,14 +9,12 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class PercentageOfNonGapsObjective implements Objective {
   @Override
-  public <S extends MSASolution> double compute(S solution, char[][] decodedSequences, DynamicallyComposedProblem<S> decomposedProblem) {
-    
-    double numberOfGaps=solution.getNumberOfGaps();
+  public <S extends MSASolution> double compute(S solution) {
+    double numberOfGaps = solution.getNumberOfGaps();
     double totalNumberOfElements = solution.getNumberOfVariables() * solution.getAlignmentLength();
-    double NonGapsP=100 * (1 - (numberOfGaps / totalNumberOfElements));
-    return NonGapsP;
-    
+    double nonGapsPercentage=100 * (1 - (numberOfGaps / totalNumberOfElements));
 
+    return nonGapsPercentage;
   }
 
   @Override

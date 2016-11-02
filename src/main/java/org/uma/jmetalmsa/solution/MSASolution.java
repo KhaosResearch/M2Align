@@ -17,24 +17,23 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
 
   List<Integer> sizeOriginalSequences;
 
+  private char[][] decodedSolution ;
+
   /**
    * Constructor
    */
   public MSASolution(MSAProblem problem) {
     super(problem);
-
     setAttributesSeqName(problem.getListOfSequenceNames());
-
     setSizeOfOriginalSequences(problem.originalSequences);
+    decodedSolution = null ;
   }
 
   public MSASolution(List<ArrayChar> AlignedSeqs, MSAProblem problem) {
     super(problem);
 
     setAttributesSeqName(problem.getListOfSequenceNames());
-
     setSizeOfOriginalSequences(problem.originalSequences);
-
     encode(AlignedSeqs);
   }
 
@@ -49,11 +48,36 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
     }
 
     setSizeOfOriginalSequences(problem.originalSequences);
-
     setAttributesSeqName(problem.getListOfSequenceNames());
-
   }
 
+  /**
+   * Copy Constructor
+   */
+  public MSASolution(MSASolution solution) {
+    super(solution.problem);
+
+    for (int i = 0; i < getNumberOfVariables(); i++) {
+
+      List<Integer> gapsGroup = new ArrayList();
+      for (int j = 0; j < solution.getVariableValue(i).size(); j++)
+        gapsGroup.add(solution.getVariableValue(i).get(j));
+
+      setVariableValue(i, gapsGroup);
+    }
+
+    for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+      setObjective(i, solution.getObjective(i));
+    }
+
+    attributes = new HashMap(solution.attributes);
+
+    sizeOriginalSequences = new ArrayList(solution.sizeOriginalSequences.size());
+    for (int i = 0; i < solution.sizeOriginalSequences.size(); i++) {
+      sizeOriginalSequences.add(solution.sizeOriginalSequences.get(i));
+    }
+  }
+  
   public void setSizeOfOriginalSequences(List<ArrayChar> originalSequences) {
     sizeOriginalSequences = new ArrayList(originalSequences.size());
     for (int i = 0; i < originalSequences.size(); i++)
@@ -61,24 +85,31 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
   }
 
 
-  public List<List<Integer>> encode(List<ArrayChar> AligSeqs) {
+/*
+  public List<List<Integer>> encode(List<ArrayChar> alignedSequences) {
     List<List<Integer>> gapsGroups = new ArrayList<>();
 
-    for (int k = 0; k < AligSeqs.size(); k++) {
-
-      gapsGroups.add(getGapsGroup(AligSeqs.get(k)));
-      setVariableValue(k, gapsGroups.get(k));
+    for (int i = 0; i < alignedSequences.size(); i++) {
+      gapsGroups.add(getGapsGroup(alignedSequences.get(i)));
+      setVariableValue(i, gapsGroups.get(i));
     }
 
     return gapsGroups;
   }
+*/
 
-  public List<Integer> getGapsGroup(ArrayChar Seq) {
+  public void encode(List<ArrayChar> alignedSequences) {
+    for (int i = 0; i < alignedSequences.size(); i++) {
+      setVariableValue(i, getGapsGroup(alignedSequences.get(i)));
+    }
+  }
+
+  public List<Integer> getGapsGroup(ArrayChar sequence) {
     List<Integer> gapsGroups = new ArrayList<>();
     Boolean GapOpen = false;
     int start = 0;
-    for (int i = 0; i < Seq.getSize(); i++) {
-      if (Seq.charAt(i) == '-') {
+    for (int i = 0; i < sequence.getSize(); i++) {
+      if (sequence.charAt(i) == '-') {
         if (!GapOpen) {
           GapOpen = true;
           start = i;
@@ -95,8 +126,7 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
 
     if (GapOpen) {
       gapsGroups.add(start);
-      gapsGroups.add(Seq.getSize() - 1);
-      GapOpen = false;
+      gapsGroups.add(sequence.getSize() - 1);
     }
 
     return gapsGroups;
@@ -107,66 +137,71 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
   }
 
   public List<ArrayChar> decode(List<ArrayChar> originalSeqs) {
-    List<ArrayChar> AligSeqs = new ArrayList<ArrayChar>();
+    List<ArrayChar> alignedSequences = new ArrayList<ArrayChar>();
 
     for (int i = 0; i < getNumberOfVariables(); i++) {
-      AligSeqs.add(decode(originalSeqs.get(i).getCharArray(), getVariableValue(i), getAlignmentLength(i)));
+      alignedSequences.add(decode(originalSeqs.get(i).getCharArray(), getVariableValue(i), getAlignmentLength(i)));
     }
 
-    return AligSeqs;
+    return alignedSequences;
   }
 
   public ArrayChar decode(char[] OriginalSeq, List<Integer> gapsGroups, int size) {
-    char[] AligSeq = new char[size];
+    char[] alignedSequence = new char[size];
     int j, l, p;
 
     for (j = 0; j < gapsGroups.size() - 1; j += 2) {
-      for (l = gapsGroups.get(j); l <= gapsGroups.get(j + 1); l++) AligSeq[l] = '-';
+      for (l = gapsGroups.get(j); l <= gapsGroups.get(j + 1); l++) alignedSequence[l] = '-';
     }
 
     p = 0;
     for (j = 0; j < size; j++) {
-      if (AligSeq[j] != '-') AligSeq[j] = OriginalSeq[p++];
+      if (alignedSequence[j] != '-') alignedSequence[j] = OriginalSeq[p++];
     }
 
-    return new ArrayChar(AligSeq);
+    return new ArrayChar(alignedSequence);
   }
 
-
   public char[][] decodeToMatrix() {
-    return decodeToMatrix(getOriginalSequences());
+    if (decodedSolution == null) {
+      decodedSolution = decodeToMatrix(getOriginalSequences()) ;
+    }
+    return decodedSolution ;
   }
 
   public char[][] decodeToMatrix(List<ArrayChar> originalSeqs) {
 
-    char[][] AligSeqs = new char[getNumberOfVariables()][];
+    char[][] alignedSequences = new char[getNumberOfVariables()][];
 
     for (int i = 0; i < getNumberOfVariables(); i++) {
-      AligSeqs[i] = decodeOneSequenceToArray(originalSeqs.get(i).getCharArray(), getVariableValue(i), getAlignmentLength(i));
+      alignedSequences[i] = decodeOneSequenceToArray(
+              originalSeqs.get(i).getCharArray(),
+              getVariableValue(i),
+              getAlignmentLength(i));
     }
 
-    return AligSeqs;
+    return alignedSequences;
   }
 
   public char[] decodeOneSequenceToArray(char[] OriginalSeq, List<Integer> gapsGroups, int size) {
-    char[] AligSeq = new char[size];
+    char[] alignedSequence = new char[size];
     int j, l, p;
 
     for (j = 0; j < gapsGroups.size() - 1; j += 2) {
       for (l = gapsGroups.get(j); l <= gapsGroups.get(j + 1); l++)
-        AligSeq[l] = '-';
+        alignedSequence[l] = '-';
     }
 
     p = 0;
     for (j = 0; j < size; j++) {
-      if (AligSeq[j] != '-')
-        AligSeq[j] = OriginalSeq[p++];
+      if (alignedSequence[j] != '-')
+        alignedSequence[j] = OriginalSeq[p++];
     }
 
-    return AligSeq;
+    return alignedSequence;
   }
 
-  public void MergeGapsGroups() {
+  public void mergeGapsGroups() {
     for (int i = 0; i < getNumberOfVariables(); i++) {
       for (int j = 1; j < getVariableValue(i).size() - 2; j += 2) {
 
@@ -176,17 +211,14 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
           getVariableValue(i).remove(j + 1);
           j -= 2;
         }
-
       }
     }
-
   }
 
   public void removeGapColumns() {
-
     List<Integer> gapsGroups;
     List<Integer> gapColumnsIndex = new ArrayList();
-    List<Integer> gapColumnsIndexGG = new ArrayList();
+    List<Integer> gapColumnsIndexGG ;
     int j, k;
 
     gapsGroups = getVariableValue(0);
@@ -196,7 +228,6 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
       for (k = 0; k < gapColumnsIndexGG.size(); k++) {
         gapColumnsIndex.add(gapColumnsIndexGG.get(k));
       }
-
     }
 
     for (j = 0; j < gapColumnsIndex.size(); j++) {
@@ -206,7 +237,7 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
 
   private List<Integer> getGapsColumns(int varIndex, int RMin, int RMax) {
     List<Integer> gapsGroups;
-    List<Integer> gapColumnsIndexGG = new ArrayList();
+    List<Integer> gapColumnsIndexGG ;
     List<Integer> gapColumnsIndex = new ArrayList();
     int j, k, RMinAux, RMaxAux;
     int numberOfVariables = this.getNumberOfVariables();
@@ -239,15 +270,12 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
               gapColumnsIndex.add(gapColumnsIndexGG.get(k));
             }
           }
-
         }
       }
-
     }
 
     return gapColumnsIndex;
   }
-
 
   public void removeGapColumn(int index) {
 
@@ -269,7 +297,6 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
           break;
         }
       }
-
     }
   }
 
@@ -312,16 +339,13 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
     return getVariableValue(i);
   }
 
-
   public List<ArrayChar> getOriginalSequences() {
     return this.problem.originalSequences;
   }
 
-
   public MSAProblem getMSAProblem() {
     return this.problem;
   }
-
 
   public boolean isValid() {
     int sizeAlignment = getAlignmentLength();
@@ -330,40 +354,12 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
 
         System.out.println("Error Solution, " + k + " sequence has a wrong Length (OSeqLenghth: " + getOriginalSequences().get(k).getSize() +
                 ") + NumOfGaps: " + getNumberOfGaps(k) + " is not equal to Size: " + sizeAlignment);
-        //System.exit(-1);
         return false;
       }
 
     }
 
     return true;
-  }
-
-  /**
-   * Copy Constructor
-   */
-  public MSASolution(MSASolution solution) {
-    super(solution.problem);
-
-    for (int i = 0; i < getNumberOfVariables(); i++) {
-
-      List<Integer> gapsGroup = new ArrayList();
-      for (int j = 0; j < solution.getVariableValue(i).size(); j++)
-        gapsGroup.add(solution.getVariableValue(i).get(j));
-
-      setVariableValue(i, gapsGroup);
-    }
-
-    for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-      setObjective(i, solution.getObjective(i));
-    }
-
-    attributes = new HashMap(solution.attributes);
-
-    sizeOriginalSequences = new ArrayList(solution.sizeOriginalSequences.size());
-    for (int i = 0; i < solution.sizeOriginalSequences.size(); i++) {
-      sizeOriginalSequences.add(solution.sizeOriginalSequences.get(i));
-    }
   }
 
   @Override
@@ -428,9 +424,9 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
         }
       }
 
-      if (sequences[i].length % 60 != 0) {
+      //if (sequences[i].length % 60 != 0) {
         alignment += "\n";
-      }
+      //}
     }
 
     return alignment;
@@ -469,10 +465,8 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
   public int getAlignmentLength() {
     return sizeOriginalSequences.get(0) + getNumberOfGaps(0);
   }
-
   public boolean isGap(char symbol) {
     return symbol == GAP_IDENTIFIER;
   }
-
 }
 

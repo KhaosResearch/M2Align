@@ -5,7 +5,7 @@ import org.uma.jmetal.util.JMetalException;
 import java.util.Arrays;
 
 /**
- * Created by ajnebro on 16/2/16.
+ * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
 public class ArrayChar {
   private char[] array;
@@ -19,17 +19,9 @@ public class ArrayChar {
     string.getChars(0, string.length(), array, 0);
   }
 
-  public ArrayChar(char[] _array) {
-
-    this.array = new char[_array.length];
-    System.arraycopy(_array, 0, this.array, 0, _array.length);
-  }
-
-  public ArrayChar(char[] _array, int L) {
-
-    this.array = new char[L];
-    System.arraycopy(_array, 0, this.array, 0, L);
-
+  public ArrayChar(char[] array) {
+    this.array = new char[array.length];
+    System.arraycopy(array, 0, this.array, 0, array.length);
   }
 
   public char[] getCharArray() {
@@ -37,10 +29,8 @@ public class ArrayChar {
   }
 
   public void setCharArray(char[] array) {
-    this.array = null;
     this.array = array;
   }
-
 
   public void append(String str) {
     int len = str.length();
@@ -55,19 +45,15 @@ public class ArrayChar {
     expand(size + len);
     System.arraycopy(str, 0, array, size, len);
   }
-
-  //No es Eficiente ir agregando char  A char ya que se expanda todo el Array
   public void append(char symbol) {
     expand(array.length + 1);
     array[array.length - 1] = symbol;
 
   }
 
-
   public char charAt(int index) {
     return array[index];
   }
-
 
   public void setCharAt(int index, char c) {
     if (index >= array.length || index < 0) {
@@ -75,7 +61,6 @@ public class ArrayChar {
     }
     array[index] = c;
   }
-
 
   public void insert(int index, char symbol) {
 
@@ -110,7 +95,6 @@ public class ArrayChar {
     expand(array.length + len);
     System.arraycopy(array, index, array, index + len, len1 - index);
     System.arraycopy(chars, 0, array, index, len);
-
   }
 
   public void delete(int index) {
@@ -126,7 +110,6 @@ public class ArrayChar {
 
     array = array2;
     array2 = null;
-
   }
 
   public void move(int index1, int index2, int newpos) {
@@ -147,9 +130,7 @@ public class ArrayChar {
       System.arraycopy(array2, 0, array, newpos, len);
 
     }
-
     array2 = null;
-
   }
 
   public String substring(int position, int length) {
@@ -182,12 +163,10 @@ public class ArrayChar {
     return array.length;
   }
 
-
   @Override
   public String toString() {
     return new String(array);
   }
-
 
   public char[] copyOf(char[] original, int newLength) {
     char[] copy = new char[newLength];
@@ -199,6 +178,4 @@ public class ArrayChar {
   public void expand(int newCapacity) {
     array = Arrays.copyOf(array, newCapacity);
   }
-
-
 }

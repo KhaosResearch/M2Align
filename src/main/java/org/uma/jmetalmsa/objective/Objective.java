@@ -8,9 +8,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
  * Created by ajnebro on 14/6/16.
  */
 public interface Objective extends DescribedEntity {
-  public <S extends MSASolution> double compute(
-          S solution, char[][] decodedSequences,
-          DynamicallyComposedProblem<S> decomposedProblem);
+  <S extends MSASolution> double compute(S solution);
 
-  public boolean isAMinimizationObjective();
+  boolean isAMinimizationObjective();
 }

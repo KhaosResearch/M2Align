@@ -2,7 +2,7 @@ package org.uma.jmetalmsa.objective.impl;
 
 import org.uma.jmetalmsa.objective.Objective;
 import org.uma.jmetalmsa.problem.DynamicallyComposedProblem;
-import org.uma.jmetalmsa.problem.util.DistanceMatrix;
+import org.uma.jmetalmsa.util.distancematrix.DistanceMatrix;
 import org.uma.jmetalmsa.solution.MSASolution;
 import org.uma.jmetalmsa.solution.util.ArrayChar;
 import org.uma.jmetalmsa.util.MSADistance;
@@ -13,54 +13,52 @@ import java.util.List;
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
 
-public class WeigthedSumOfPairsObjective implements Objective {
+public class WeightedSumOfPairsObjective implements Objective {
   public DistanceMatrix sustitutionMatrix;
   public MSADistance distanceMatrix;
   public double[][] weightMatrix;
-  public double weightGapOpen, weightGapExtend;
+  public double weightGapOpen ;
+  public double weightGapExtend;
   double wSOP = Double.MIN_VALUE;
 
-  public WeigthedSumOfPairsObjective(DistanceMatrix sustitutionMatrix, double _weightGapOpen, double _weightGapExtend) {
-
+  public WeightedSumOfPairsObjective(DistanceMatrix sustitutionMatrix, double weightGapOpen, double weightGapExtend) {
     this.sustitutionMatrix = sustitutionMatrix;
     distanceMatrix = new MSADistance();
-    weightGapOpen = _weightGapOpen;
-    weightGapExtend = _weightGapExtend;
-
+    this.weightGapOpen = weightGapOpen;
+    this.weightGapExtend = weightGapExtend;
   }
 
   public void initializeWeightMatrix(List<ArrayChar> originalSequences) {
-
     weightMatrix = getWMatrix(originalSequences);
-
   }
 
   @Override
-  public <S extends MSASolution> double compute(S solution, char[][] decodedSequences, DynamicallyComposedProblem<S> decomposedProblem) {
+  public <S extends MSASolution> double compute(S solution) {
+    char [][]decodedSequences = solution.decodeToMatrix() ;
     int lengthSequences = solution.getAlignmentLength();
-    int NumVars = solution.getNumberOfVariables();
+    int numberOfVariables = solution.getNumberOfVariables();
 
-    double SumOfPairs = 0;
-    double SumOfPairsOfLthColumn;
+    double sumOfPairs = 0;
+    double sumOfPairsOfLthColumn;
     int i, j;
 
     for (int l = 0; l < lengthSequences; l++) {
-      SumOfPairsOfLthColumn = 0;
+      sumOfPairsOfLthColumn = 0;
 
-      for (i = 0; i < NumVars - 1; i++) {
-        for (j = i + 1; j < NumVars; j++)
-          SumOfPairsOfLthColumn += weightMatrix[i][j] * sustitutionMatrix.getDistance(decodedSequences[i][l], decodedSequences[j][l]);
+      for (i = 0; i < numberOfVariables - 1; i++) {
+        for (j = i + 1; j < numberOfVariables; j++)
+          sumOfPairsOfLthColumn += weightMatrix[i][j] * sustitutionMatrix.getDistance(decodedSequences[i][l], decodedSequences[j][l]);
       }
 
-      SumOfPairs += SumOfPairsOfLthColumn;
+      sumOfPairs += sumOfPairsOfLthColumn;
     }
 
-    double AffineGapPenaltyScore = 0;
-    for (i = 0; i < NumVars; i++) {
-      AffineGapPenaltyScore += getAffineGapPenalty(solution.getVariableValue(i));
+    double affineGapPenaltyScore = 0;
+    for (i = 0; i < numberOfVariables; i++) {
+      affineGapPenaltyScore += getAffineGapPenalty(solution.getVariableValue(i));
     }
 
-    return SumOfPairs - AffineGapPenaltyScore;
+    return sumOfPairs - affineGapPenaltyScore;
 
   }
 
@@ -77,7 +75,6 @@ public class WeigthedSumOfPairsObjective implements Objective {
   }
 
   public double[][] getWMatrix(List<ArrayChar> Seqs) {
-
     int NumSeqs = Seqs.size();
     char[] Si;
     char[] Sj;
@@ -91,7 +88,6 @@ public class WeigthedSumOfPairsObjective implements Objective {
         Sj = Seqs.get(j).getCharArray();
 
         wMatrix[i][j] = 1 - (distanceMatrix.getLevenshteinDistance(Si, Sj) / (Si.length > Sj.length ? Si.length : Sj.length));
-
       }
     }
 

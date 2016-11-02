@@ -9,8 +9,8 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class PercentageOfAlignedColumnsObjective implements Objective {
   @Override
-  public <S extends MSASolution> double compute(S solution, char[][] decodedSequences, DynamicallyComposedProblem<S> decomposedProblem) {
-      
+  public <S extends MSASolution> double compute(S solution) {
+    char [][]decodedSequences = solution.decodeToMatrix() ;
     int numberOfAlignedColumns = 0;
     int numberOfColumns = decodedSequences[0].length;
     char firstResidue;
@@ -33,8 +33,6 @@ public class PercentageOfAlignedColumnsObjective implements Objective {
 
     double result = 100.0 * numberOfAlignedColumns / numberOfColumns;
     return result;
-    
-    
   }
 
   @Override

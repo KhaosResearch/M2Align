@@ -14,13 +14,14 @@ public class StrikeObjective implements Objective {
   private Strike strike ;
   private List<StringBuilder> listOfSequenceNames ;
 
-  public void initializeParameters(String pdbPath, String instanceBalibase, List<StringBuilder> listOfSequenceNames) {
-    strike = new Strike(pdbPath, instanceBalibase + ".con") ;
+  public void initializeParameters(String pdbPath, List<StringBuilder> listOfSequenceNames) {
+    strike = new Strike(pdbPath, listOfSequenceNames) ;
     this.listOfSequenceNames = listOfSequenceNames ;
   }
 
   @Override
-  public <S extends MSASolution> double compute(S solution, char[][] decodedSequences, DynamicallyComposedProblem<S> decomposedProblem) {
+  public <S extends MSASolution> double compute(S solution) {
+    char [][]decodedSequences = solution.decodeToMatrix() ;
     return strike.compute(decodedSequences, listOfSequenceNames, false) ;
   }
 

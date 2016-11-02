@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-classpath %classpath org.uma.jmetalmsa.runner.MOSAStrERunner /home/cristian/jMetalGitHub/example/BB11001/BB11001.tfa /home/cristian/jMetalGitHub/example/BB11001/ BB11001.fasta_aln-BB11001.tfa_clu-BB11001.tfa_mafft-BB11001.tfa_fsa-BB11001.tfa_kalign-BB11001.tfa_probcons 100000 100 1</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath org.uma.jmetalmsa.runner.MOSAStrERunner /home/cristian/jMetalGitHub/example/BB11001/BB11001.tfa /home/cristian/jMetalGitHub/example/BB11001/ BB11001.fasta_aln-BB11001.tfa_clu-BB11001.tfa_mafft-BB11001.tfa_fsa-BB11001.tfa_kalign-BB11001.tfa_probcons 100000 100 1</exec.args>
+                <exec.executable>java</exec.executable>
+                <jpda.listen>true</jpda.listen>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-classpath %classpath org.uma.jmetalmsa.runner.MOSAStrERunner /home/cristian/jMetalGitHub/example/BB11001/BB11001.tfa /home/cristian/jMetalGitHub/example/BB11001/ BB11001.fasta_aln-BB11001.tfa_clu-BB11001.tfa_mafft-BB11001.tfa_fsa-BB11001.tfa_kalign-BB11001.tfa_probcons 100000 100 1</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+    </actions>
