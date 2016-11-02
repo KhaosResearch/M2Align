@@ -20,8 +20,7 @@ public class StrikeObjective implements Objective {
   }
 
   @Override
-  public <S extends MSASolution> double compute(S solution) {
-    char [][]decodedSequences = solution.decodeToMatrix() ;
+  public <S extends MSASolution> double compute(S solution, char [][]decodedSequences) {
     return strike.compute(decodedSequences, listOfSequenceNames, false) ;
   }
 

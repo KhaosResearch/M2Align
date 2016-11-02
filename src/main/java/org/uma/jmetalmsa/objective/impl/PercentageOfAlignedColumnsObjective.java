@@ -9,8 +9,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class PercentageOfAlignedColumnsObjective implements Objective {
   @Override
-  public <S extends MSASolution> double compute(S solution) {
-    char [][]decodedSequences = solution.decodeToMatrix() ;
+  public <S extends MSASolution> double compute(S solution, char[][] decodedSequences) {
     int numberOfAlignedColumns = 0;
     int numberOfColumns = decodedSequences[0].length;
     char firstResidue;

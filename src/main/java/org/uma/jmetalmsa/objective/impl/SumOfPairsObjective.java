@@ -13,9 +13,8 @@ public class SumOfPairsObjective implements Objective {
   }
 
   @Override
-  public <S extends MSASolution> double compute(S solution) {
+  public <S extends MSASolution> double compute(S solution,char [][]decodedSequences ) {
     double sumOfPairs = 0;
-    char [][]decodedSequences = solution.decodeToMatrix() ;
 
     int numberOfVariables = decodedSequences.length;
     int lengthSequences = decodedSequences[0].length;

@@ -17,7 +17,6 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
 
   List<Integer> sizeOriginalSequences;
 
-  private char[][] decodedSolution ;
 
   /**
    * Constructor
@@ -26,7 +25,6 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
     super(problem);
     setAttributesSeqName(problem.getListOfSequenceNames());
     setSizeOfOriginalSequences(problem.originalSequences);
-    decodedSolution = null ;
   }
 
   public MSASolution(List<ArrayChar> AlignedSeqs, MSAProblem problem) {
@@ -163,10 +161,11 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
   }
 
   public char[][] decodeToMatrix() {
-    if (decodedSolution == null) {
-      decodedSolution = decodeToMatrix(getOriginalSequences()) ;
-    }
-    return decodedSolution ;
+//    if (decodedSolution == null) {
+//      decodedSolution = decodeToMatrix(getOriginalSequences()) ;
+//    }
+//    return decodedSolution ;
+    return decodeToMatrix(getOriginalSequences());
   }
 
   public char[][] decodeToMatrix(List<ArrayChar> originalSeqs) {

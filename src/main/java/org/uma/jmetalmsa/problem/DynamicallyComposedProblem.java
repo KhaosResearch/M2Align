@@ -17,14 +17,18 @@ public abstract class DynamicallyComposedProblem<S extends MSASolution> extends 
   @Override
   public void evaluate(S solution) {
     solution.removeGapColumns();
+     char[][] decodedSequences = solution.decodeToMatrix();
 
     for (int i = 0 ; i < getNumberOfObjectives(); i++) {
       if (objectiveList.get(i).isAMinimizationObjective()) {
-        solution.setObjective(i, objectiveList.get(i).compute(solution));
+        solution.setObjective(i, objectiveList.get(i).compute(solution,decodedSequences));
       } else {
-        solution.setObjective(i, -1.0 * objectiveList.get(i).compute(solution));
+        solution.setObjective(i, -1.0 * objectiveList.get(i).compute(solution,decodedSequences));
       }
     }
+    
+    decodedSequences=null;
+    
   }
   
   public List<Objective> getObjectiveList(){

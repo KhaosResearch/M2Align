@@ -32,7 +32,7 @@ public class GenerateStructuralInformation {
              throw new JMetalException("Wrong number of arguments") ;
         }
 
-         String dataFile=args[0];//alignment file
+         String sequencesDataFile=args[0];//Sequences file
          String path=args[1];  //Path to save th pdb's files
          String strikeGeneratorPath=args[2];  //Path to StrikeGenator Executable
          
@@ -40,7 +40,7 @@ public class GenerateStructuralInformation {
          String pdbFileName;
          
         LinkedHashMap<String, ProteinSequence>
-            sequences = FastaReaderHelper.readFastaProteinSequence(new File(dataFile));
+            sequences = FastaReaderHelper.readFastaProteinSequence(new File(sequencesDataFile));
 
         for (Map.Entry<String, ProteinSequence> entry : sequences.entrySet()) {
             

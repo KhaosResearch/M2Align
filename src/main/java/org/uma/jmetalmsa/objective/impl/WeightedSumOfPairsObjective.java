@@ -33,8 +33,7 @@ public class WeightedSumOfPairsObjective implements Objective {
   }
 
   @Override
-  public <S extends MSASolution> double compute(S solution) {
-    char [][]decodedSequences = solution.decodeToMatrix() ;
+  public <S extends MSASolution> double compute(S solution, char [][]decodedSequences) {
     int lengthSequences = solution.getAlignmentLength();
     int numberOfVariables = solution.getNumberOfVariables();
 
@@ -118,6 +117,6 @@ public class WeightedSumOfPairsObjective implements Objective {
 
   @Override
   public String getDescription() {
-    return "Weighted sum of pairs";
+    return "Weighted sum of pairs with affine gaps";
   }
 }
