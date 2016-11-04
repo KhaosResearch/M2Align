@@ -70,9 +70,9 @@ java -cp target/jMetalMSA-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.jmetalm
 
 For solving BAliBASE problems, jMetalMSA search the Sequences Files in FASTA format, the Contacts files and the pre-computed alignments, as follows:
 
-*Directory with the PDB Files:   dataDirectory + /aligned/strike/ + Group + / + balibaseProblemName + /
-*Balibase Directory: dataDirectory + /bb3_release/ + Group + /
-*Directory with the PreAlignments:  dataDirectory + /aligned/ + Group + / + balibaseProblemName;
+* Directory with the PDB Files:   dataDirectory + /aligned/strike/ + Group + / + balibaseProblemName + /
+* Balibase Directory: dataDirectory + /bb3_release/ + Group + /
+* Directory with the PreAlignments:  dataDirectory + /aligned/ + Group + / + balibaseProblemName;
 
 
 ##Results 
