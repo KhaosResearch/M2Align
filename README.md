@@ -5,9 +5,9 @@ Currently it contains an implementation of the NSGA-II algorithm configured with
 
 ## Summary of features
 jMetalMSA containts the following features:
+* Implementation of the MO-SAStrE algorithm
 * The algorithm can run in parallel in multi-core systems
 * The included dataset is BAliBASE v3.0
-* more features ....
 
 ## Requirements
 To use jMetalMSA the following software packages are required:
