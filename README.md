@@ -25,7 +25,7 @@ Once cloned, you can compile the software and generate a jar file with the follo
 ```
 mvn package
 ```
-This sentence will generate a directory called `target` which will contain a file called `jMetalMSA-1.0-SNAPSHOT-jar-with-dependencies.jar`
+This sentence will generate a directory called `target` which will contain a file called `m2align-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
 ## Download PDB files and Generation of the Strike Contact Matrix files
 
@@ -45,7 +45,7 @@ The Contacts files for each sequence of the dataset will be created into the out
 
 ## Runing M2Align
 
-To execute the algorithm to align a particular dataset of sequences, just run this command:
+To execute the MO-SAStrE algorithn to align a particular dataset of sequences, just run this command:
 
 ````
 java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.runner.MOSAStrERunner sequencesFileName PDB_ContactsDataDirectory listOfPreComputedAlignments NumberOfEvaluations PopulationSize NumberOfCores
