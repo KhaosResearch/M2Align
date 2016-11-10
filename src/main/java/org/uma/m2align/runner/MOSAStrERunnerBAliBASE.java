@@ -45,7 +45,7 @@ import org.uma.m2align.problem.BAliBASEMSAProblem;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class MOSAStrERunner_BAliBASE {
+public class MOSAStrERunnerBAliBASE {
   /**
    * Arguments: instance,  dataDirectory, maxEvaluations populationSize numberOfCores
    * @param args Command line arguments.
