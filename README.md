@@ -19,7 +19,7 @@ To use M2Align the following software packages are required:
 ## Downloading and compiling
 To download M2Align just clone the Git repository hosted in GitHub:
 ```
-git clone https://github.com/jMetal/M2Align.git
+git clone https://github.com/KhaosResearch/M2Align.git
 ```
 Once cloned, you can compile the software and generate a jar file with the following command:
 ```
