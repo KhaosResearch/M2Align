@@ -67,10 +67,6 @@ public class MOSAStrERunnerBAliBASE {
     Integer maxEvaluations = Integer.parseInt(args[2]);
     Integer populationSize = Integer.parseInt(args[3]);
     Integer numberOfCores = Integer.parseInt(args[4]);
-    
-    crossover = new SPXMSACrossover(0.8);
-    mutation = new ShiftClosedGapsMSAMutation(0.2);
-    selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
 
     List<Score> scoreList = new ArrayList<>();
 
@@ -84,6 +80,10 @@ public class MOSAStrERunnerBAliBASE {
     objStrike.initializeParameters(problem.PDBPath, problem.getListOfSequenceNames());
 
     SolutionListEvaluator<MSASolution> evaluator;
+
+    crossover = new SPXMSACrossover(0.8);
+    mutation = new ShiftClosedGapsMSAMutation(0.2, problem);
+    selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
 
     if (numberOfCores == 1) {
       evaluator = new SequentialSolutionListEvaluator<>();

@@ -3,6 +3,7 @@ package org.uma.m2align.mutation;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.MSASolution;
 
 import java.util.List;
@@ -10,13 +11,14 @@ import java.util.List;
 public class ShiftClosedGapsMSAMutation implements MutationOperator<MSASolution> {
   private double mutationProbability;
   private JMetalRandom randomGenerator;
- 
+  private MSAProblem problem ;
 
-  public ShiftClosedGapsMSAMutation(double mutationProbability) {
+  public ShiftClosedGapsMSAMutation(double mutationProbability, MSAProblem problem) {
     if ((mutationProbability < 0) || (mutationProbability > 1)) {
       throw new JMetalException("Mutation probability value invalid: " + mutationProbability);
     }
     this.mutationProbability = mutationProbability;
+    this.problem = problem ;
 
     randomGenerator = JMetalRandom.getInstance();
   }
@@ -28,6 +30,7 @@ public class ShiftClosedGapsMSAMutation implements MutationOperator<MSASolution>
     }
 
     doMutation(solution);
+    problem.evaluate(solution);
     return solution;
   }
 

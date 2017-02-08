@@ -93,7 +93,7 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
   }
 
   @Override protected List<MSASolution> evaluatePopulation(List<MSASolution> population) {
-      population.parallelStream().forEach(s -> getProblem().evaluate(s)) ;
+    //population.parallelStream().forEach(s -> getProblem().evaluate(s)) ;
 
     return population;
   }

@@ -70,10 +70,6 @@ public class MOSAStrERunner {
     Integer maxEvaluations = Integer.parseInt(args[3]);
     Integer populationSize = Integer.parseInt(args[4]);
     Integer numberOfCores = Integer.parseInt(args[5]);
-    
-    crossover = new SPXMSACrossover(0.8);
-    mutation = new ShiftClosedGapsMSAMutation(0.2);
-    selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
 
     List<Score> scoreList = new ArrayList<>();
 
@@ -87,6 +83,10 @@ public class MOSAStrERunner {
     objStrike.initializeParameters(dataDirectory, problem.getListOfSequenceNames());
 
     SolutionListEvaluator<MSASolution> evaluator;
+
+    crossover = new SPXMSACrossover(0.8);
+    mutation = new ShiftClosedGapsMSAMutation(0.2, problem);
+    selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
 
     if (numberOfCores == 1) {
       evaluator = new SequentialSolutionListEvaluator<>();
