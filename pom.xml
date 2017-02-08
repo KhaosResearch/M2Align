@@ -64,12 +64,12 @@
         <dependency>
             <groupId>org.uma.jmetal</groupId>
             <artifactId>jmetal-core</artifactId>
-            <version>5.2-SNAPSHOT</version>
+            <version>5.2</version>
         </dependency>
         <dependency>
             <groupId>org.uma.jmetal</groupId>
             <artifactId>jmetal-algorithm</artifactId>
-            <version>5.2-SNAPSHOT</version>
+            <version>5.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

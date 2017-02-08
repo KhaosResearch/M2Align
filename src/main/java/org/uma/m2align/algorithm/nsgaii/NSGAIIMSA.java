@@ -8,11 +8,15 @@ import org.uma.jmetal.measure.impl.SimpleMeasureManager;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
+import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.MSASolution;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Antonio J. Nebro
@@ -43,6 +47,55 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
   @Override
   protected List<MSASolution> createInitialPopulation() {
     return ((MSAProblem) getProblem()).createInitialPopulation(getMaxPopulationSize());
+  }
+
+  @Override
+  protected List<MSASolution> reproduction(List<MSASolution> population) {
+    int numberOfParents = crossoverOperator.getNumberOfParents() ;
+
+    checkNumberOfParents(population, numberOfParents);
+
+    List<List<MSASolution>> offspairs = new ArrayList<>();
+    for (int i = 0; i < population.size(); i+=2) {
+      List<MSASolution> tmpList = new ArrayList<>() ;
+      tmpList.add(population.get(i));
+      tmpList.add(population.get(i + 1)) ;
+
+      offspairs.add(tmpList) ;
+    }
+
+    List<MSASolution> offspringPopulation = offspairs
+            .parallelStream()
+            .map(pair -> crossoverOperator.execute(pair))
+            .flatMap(pair -> pair.stream())
+            .map(solution -> mutationOperator.execute(solution))
+            .collect(Collectors.toList());
+
+    //offspringPopulation.parallelStream().forEach(solution -> getProblem().evaluate(solution));
+
+/*
+    List<MSASolution> offspringPopulation = new ArrayList<MSASolution>(getMaxPopulationSize());
+    for (int i = 0; i < getMaxPopulationSize(); i += numberOfParents) {
+      List<MSASolution> parents = new ArrayList<MSASolution>(numberOfParents);
+      for (int j = 0; j < numberOfParents; j++) {
+        parents.add(population.get(i+j));
+      }
+
+      List<MSASolution> offspring = crossoverOperator.execute(parents);
+
+      for(MSASolution s: offspring){
+        mutationOperator.execute(s);
+        offspringPopulation.add(s);
+      }
+    }
+*/
+    return offspringPopulation;
+  }
+
+  @Override protected List<MSASolution> evaluatePopulation(List<MSASolution> population) {
+      population.parallelStream().forEach(s -> getProblem().evaluate(s)) ;
+
+    return population;
   }
 
   /* Measures code */
