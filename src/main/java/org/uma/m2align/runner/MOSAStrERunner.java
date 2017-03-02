@@ -95,6 +95,9 @@ public class MOSAStrERunner {
       evaluator = new MultithreadedSolutionListEvaluator<MSASolution>(numberOfCores, problem);
     }
 
+    int numberOfThreads = 4 ;
+    System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", ""+ numberOfThreads);
+
     algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
