@@ -75,7 +75,7 @@ For solving BAliBASE problems, M2Align searches the Sequences Files in FASTA for
 * Directory with the PreAlignments:  dataDirectory + /aligned/ + Group + / + balibaseProblemName;
 
 
-##Results 
+## Results 
 
 The output of the program are two files:
 * `VAR.tsv`: contains the Pareto front approximation. For each solution, this file contains a line with the values of the three objectives.
