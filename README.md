@@ -1,4 +1,4 @@
-#M2Align: MultiObjective Multiple Sequence Alignment
+# M2Align: MultiObjective Multiple Sequence Alignment
 
 M2Align is a software project aimed at solving multiple sequence alignment (MSA) problems by using multi-objective metaheuristics. It is based on the jMetal multi-objective framework, which is extended with an encoding for representing MSA solutions. 
 
