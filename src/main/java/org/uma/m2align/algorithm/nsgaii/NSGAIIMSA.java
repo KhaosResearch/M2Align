@@ -55,28 +55,9 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
 
     checkNumberOfParents(population, numberOfParents);
 
-    List<List<MSASolution>> offspairs = new ArrayList<>();
-    for (int i = 0; i < population.size(); i+=2) {
-      List<MSASolution> tmpList = new ArrayList<>() ;
-      tmpList.add(population.get(i));
-      tmpList.add(population.get(i + 1)) ;
-
-      offspairs.add(tmpList) ;
-    }
-
-    List<MSASolution> offspringPopulation = offspairs
-            .parallelStream()
-            .map(pair -> crossoverOperator.execute(pair))
-            .flatMap(pair -> pair.stream())
-            .map(solution -> mutationOperator.execute(solution))
-            .collect(Collectors.toList());
-
-    //offspringPopulation.parallelStream().forEach(solution -> getProblem().evaluate(solution));
-
-/*
-    List<MSASolution> offspringPopulation = new ArrayList<MSASolution>(getMaxPopulationSize());
+    List<MSASolution> offspringPopulation = new ArrayList<>(getMaxPopulationSize());
     for (int i = 0; i < getMaxPopulationSize(); i += numberOfParents) {
-      List<MSASolution> parents = new ArrayList<MSASolution>(numberOfParents);
+      List<MSASolution> parents = new ArrayList<>(numberOfParents);
       for (int j = 0; j < numberOfParents; j++) {
         parents.add(population.get(i+j));
       }
@@ -88,12 +69,13 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
         offspringPopulation.add(s);
       }
     }
-*/
+
     return offspringPopulation;
   }
 
   @Override protected List<MSASolution> evaluatePopulation(List<MSASolution> population) {
-      population.parallelStream().forEach(s -> getProblem().evaluate(s)) ;
+      population = evaluator.evaluate(population, getProblem());
+      //population.parallelStream().forEach(s -> getProblem().evaluate(s)) ;
 
     return population;
   }
