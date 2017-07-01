@@ -92,6 +92,9 @@ public class MOSAStrERunnerBAliBASE {
       evaluator = new MultithreadedSolutionListEvaluator<MSASolution>(numberOfCores, problem);
     }
 
+    int numberOfThreads = numberOfCores ;
+    System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", ""+ numberOfThreads+ "");
+    
     algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
@@ -105,27 +108,29 @@ public class MOSAStrERunnerBAliBASE {
 
     List<MSASolution> population = algorithm.getResult();
     long computingTime = algorithmRunner.getComputingTime();
-
-    JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
     
-    for (MSASolution solution : population) {
-      for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-        if (!scoreList.get(i).isAMinimizationScore()) {
-          solution.setObjective(i, -1.0 * solution.getObjective(i));
-        }
-      }
-    }
-       
-    DefaultFileOutputContext varFile = new  DefaultFileOutputContext("VAR." + instance + ".tsv");
-    varFile.setSeparator("\n");
-    DefaultFileOutputContext funFile = new  DefaultFileOutputContext("FUN." + instance + ".tsv");
-    funFile.setSeparator("\t");
+    System.out.println(instance + "\t" + numberOfCores + "\t" + computingTime );
 
-   
-    new SolutionListOutput(population)
-            .setVarFileOutputContext(varFile)
-            .setFunFileOutputContext(funFile)
-            .print();
+//    JMetalLogger.logger.info("Total execution time: " + computingTime + " ms");
+//    
+//    for (MSASolution solution : population) {
+//      for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+//        if (!scoreList.get(i).isAMinimizationScore()) {
+//          solution.setObjective(i, -1.0 * solution.getObjective(i));
+//        }
+//      }
+//    }
+//       
+//    DefaultFileOutputContext varFile = new  DefaultFileOutputContext("VAR." + instance + ".tsv");
+//    varFile.setSeparator("\n");
+//    DefaultFileOutputContext funFile = new  DefaultFileOutputContext("FUN." + instance + ".tsv");
+//    funFile.setSeparator("\t");
+//
+//   
+//    new SolutionListOutput(population)
+//            .setVarFileOutputContext(varFile)
+//            .setFunFileOutputContext(funFile)
+//            .print();
 
     evaluator.shutdown();
     

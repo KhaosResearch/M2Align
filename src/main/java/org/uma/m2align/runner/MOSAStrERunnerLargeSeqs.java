@@ -21,19 +21,14 @@ import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalException;
-import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
-import org.uma.jmetal.util.fileoutput.SolutionListOutput;
-import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.m2align.algorithm.nsgaii.NSGAIIMSABuilder;
 import org.uma.m2align.crossover.SPXMSACrossover;
 import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
-import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
-import org.uma.m2align.score.impl.StrikeScore;
 import org.uma.m2align.solution.MSASolution;
 
 import java.util.ArrayList;
@@ -41,6 +36,8 @@ import java.util.List;
 import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
 import org.uma.m2align.problem.Standard_MSAProblem;
 import org.uma.m2align.score.Score;
+import org.uma.m2align.score.impl.SumOfPairsScore;
+import org.uma.m2align.util.distancematrix.impl.PAM250;
 
 
 /**
@@ -48,7 +45,7 @@ import org.uma.m2align.score.Score;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class MOSAStrERunner {
+public class MOSAStrERunnerLargeSeqs {
   /**
    * Arguments: msaFileName,  dataDirectory, preComputedAlignments, maxEvaluations populationSize numberOfCores
    * @param args Command line arguments.
@@ -70,17 +67,16 @@ public class MOSAStrERunner {
     Integer maxEvaluations = Integer.parseInt(args[3]);
     Integer populationSize = Integer.parseInt(args[4]);
     Integer numberOfCores = Integer.parseInt(args[5]);
-
+    
+    
     List<Score> scoreList = new ArrayList<>();
 
-    StrikeScore objStrike = new StrikeScore();
-    scoreList.add(objStrike);
+    scoreList.add(new SumOfPairsScore(new PAM250()));
     scoreList.add(new PercentageOfAlignedColumnsScore());
     scoreList.add(new PercentageOfNonGapsScore());
 
     problem = new Standard_MSAProblem(msaFile, dataDirectory, preComputedAlignments, scoreList);
 
-    objStrike.initializeParameters(dataDirectory, problem.getListOfSequenceNames());
 
     SolutionListEvaluator<MSASolution> evaluator;
 
@@ -114,7 +110,7 @@ public class MOSAStrERunner {
 
    // JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
 
-    System.out.println(problem + "\t" + numberOfCores + "\t" + computingTime );
+    System.out.println(msaFile + "\t" + numberOfCores + "\t" + computingTime );
     
 //    for (MSASolution solution : population) {
 //      for (int i = 0; i < problem.getNumberOfObjectives(); i++) {

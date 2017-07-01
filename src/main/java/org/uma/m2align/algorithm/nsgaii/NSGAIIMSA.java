@@ -8,7 +8,6 @@ import org.uma.jmetal.measure.impl.SimpleMeasureManager;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.MSASolution;
@@ -16,7 +15,6 @@ import org.uma.m2align.solution.MSASolution;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * @author Antonio J. Nebro
@@ -64,6 +62,7 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
       offspairs.add(tmpList) ;
     }
 
+    
     List<MSASolution> offspringPopulation = offspairs
             .parallelStream()
             .map(pair -> crossoverOperator.execute(pair))

@@ -40,6 +40,7 @@ public class Standard_MSAProblem extends MSAProblem {
     
     listOfPrecomputedStringAlignments = readPreComputedAlignments(dataFiles);
     
+    
   }
 
 }

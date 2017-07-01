@@ -78,6 +78,7 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
       try {
           
         List<ArrayChar> seqAligned =readDataFromFastaFile(dataFile);
+                
         MSASolution sol = new MSASolution(seqAligned, this);
         if(!sol.isValid()){
           System.out.println("MSA in file " + dataFile + " is not Valid");
