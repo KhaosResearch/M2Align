@@ -80,3 +80,6 @@ For solving BAliBASE problems, M2Align searches the Sequences Files in FASTA for
 The output of the program are two files:
 * `VAR.tsv`: contains the Pareto front approximation. For each solution, this file contains a line with the values of the three objectives.
 * `FUN.tsv`: contains the Pareto set approximation. Each solution is represented in FASTA format.
+
+
+
