@@ -15,7 +15,6 @@ package org.uma.m2align.runner;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder.NSGAIIVariant;
 import org.uma.jmetal.measure.MeasureListener;
 import org.uma.jmetal.measure.MeasureManager;
 import org.uma.jmetal.measure.impl.BasicMeasure;

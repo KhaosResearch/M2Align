@@ -1,10 +1,9 @@
 package org.uma.m2align.util.distancematrix.impl;
 
-import org.uma.jmetal.util.JMetalException;
-import org.uma.m2align.util.distancematrix.DistanceMatrix;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.uma.jmetal.util.JMetalException;
+import org.uma.m2align.util.distancematrix.DistanceMatrix;
 
 /**
  * Class implementing the PAM 250 substitution matrix

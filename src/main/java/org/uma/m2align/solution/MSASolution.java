@@ -1,15 +1,14 @@
 package org.uma.m2align.solution;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.io.FastaWriterHelper;
 import org.uma.jmetal.solution.impl.AbstractGenericSolution;
 import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.util.ArrayChar;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProblem> {
 

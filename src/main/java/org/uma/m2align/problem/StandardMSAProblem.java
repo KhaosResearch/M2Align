@@ -1,11 +1,10 @@
 package org.uma.m2align.problem;
 
-import org.uma.jmetal.util.JMetalException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
+import org.uma.jmetal.util.JMetalException;
 import org.uma.m2align.score.Score;
 
 public class StandardMSAProblem extends MSAProblem {

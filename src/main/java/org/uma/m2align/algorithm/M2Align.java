@@ -1,5 +1,7 @@
 package org.uma.m2align.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIMeasures;
 import org.uma.jmetal.measure.impl.BasicMeasure;
 import org.uma.jmetal.measure.impl.CountingMeasure;
@@ -11,9 +13,6 @@ import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.MSASolution;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class implementing the M2Align algorithm published in:

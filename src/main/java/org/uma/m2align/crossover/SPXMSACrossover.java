@@ -1,13 +1,12 @@
 package org.uma.m2align.crossover;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import org.uma.m2align.solution.MSASolution;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Antonio J. Nebro

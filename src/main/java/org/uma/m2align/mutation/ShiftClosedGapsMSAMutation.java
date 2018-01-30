@@ -1,11 +1,10 @@
 package org.uma.m2align.mutation;
 
+import java.util.List;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import org.uma.m2align.solution.MSASolution;
-
-import java.util.List;
 
 public class ShiftClosedGapsMSAMutation implements MutationOperator<MSASolution> {
   private double mutationProbability;

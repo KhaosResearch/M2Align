@@ -1,10 +1,9 @@
 package org.uma.m2align.problem;
 
-import org.uma.jmetal.problem.impl.AbstractGenericProblem;
-import org.uma.m2align.solution.MSASolution;
-
 import java.util.List;
+import org.uma.jmetal.problem.impl.AbstractGenericProblem;
 import org.uma.m2align.score.Score;
+import org.uma.m2align.solution.MSASolution;
 
 public abstract class DynamicallyComposedProblem<S extends MSASolution> extends AbstractGenericProblem<S> {
   private List<Score> scoreList ;

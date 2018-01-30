@@ -13,10 +13,9 @@
 
 package org.uma.m2align.util;
 
-import org.uma.jmetal.solution.Solution;
-
 import java.io.Serializable;
 import java.util.Comparator;
+import org.uma.jmetal.solution.Solution;
 
 /**
  * Compares two solutions according to the crowding distance attribute. The higher

@@ -17,10 +17,8 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
-
 import org.uma.jmetal.util.JMetalException;
 
 

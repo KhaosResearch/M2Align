@@ -13,15 +13,14 @@
 
 package org.uma.m2align.util;
 
-import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.util.comparator.ObjectiveComparator;
-import org.uma.jmetal.util.solutionattribute.DensityEstimator;
-import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.util.comparator.ObjectiveComparator;
+import org.uma.jmetal.util.solutionattribute.DensityEstimator;
+import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
 
 /**
  * This class implements the crowding distance

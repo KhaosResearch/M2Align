@@ -1,5 +1,11 @@
 package org.uma.m2align.problem;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
@@ -7,16 +13,9 @@ import org.biojava.nbio.core.sequence.io.FastaWriterHelper;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import org.uma.m2align.crossover.SPXMSACrossover;
+import org.uma.m2align.score.Score;
 import org.uma.m2align.solution.MSASolution;
 import org.uma.m2align.solution.util.ArrayChar;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import org.uma.m2align.score.Score;
 
 public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
   public List<ArrayChar> originalSequences;

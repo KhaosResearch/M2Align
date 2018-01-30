@@ -1,11 +1,9 @@
 package org.uma.m2align.score.impl;
 
-import org.uma.m2align.problem.DynamicallyComposedProblem;
-import org.uma.m2align.solution.MSASolution;
-import org.uma.m2align.strike.Strike;
-
 import java.util.List;
 import org.uma.m2align.score.Score;
+import org.uma.m2align.solution.MSASolution;
+import org.uma.m2align.strike.Strike;
 
 /**
  * @author Antonio J. Nebro <antonio@lcc.uma.es>

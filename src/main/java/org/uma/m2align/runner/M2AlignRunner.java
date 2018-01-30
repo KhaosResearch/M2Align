@@ -13,8 +13,9 @@
 
 package org.uma.m2align.runner;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder.NSGAIIVariant;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
@@ -31,15 +32,12 @@ import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.m2align.algorithm.M2AlignBuilder;
 import org.uma.m2align.crossover.SPXMSACrossover;
 import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
+import org.uma.m2align.problem.StandardMSAProblem;
+import org.uma.m2align.score.Score;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
 import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
 import org.uma.m2align.score.impl.StrikeScore;
 import org.uma.m2align.solution.MSASolution;
-
-import java.util.ArrayList;
-import java.util.List;
-import org.uma.m2align.problem.StandardMSAProblem;
-import org.uma.m2align.score.Score;
 
 
 /**

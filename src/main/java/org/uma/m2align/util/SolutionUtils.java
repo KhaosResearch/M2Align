@@ -1,11 +1,10 @@
 package org.uma.m2align.util;
 
+import java.util.Comparator;
+import java.util.List;
 import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
-
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Created by Antonio J. Nebro on 6/12/14.
