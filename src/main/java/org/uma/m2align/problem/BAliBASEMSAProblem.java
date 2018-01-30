@@ -7,7 +7,7 @@ import java.util.List;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.uma.m2align.score.Score;
 
-public class BAliBASE_MSAProblem extends MSAProblem {
+public class BAliBASEMSAProblem extends MSAProblem {
   public String PDBPath;
   public String InstanceBalibase;
   public String BalibasePath;
@@ -16,7 +16,7 @@ public class BAliBASE_MSAProblem extends MSAProblem {
   /**
    * Constructor
    */
-  public BAliBASE_MSAProblem(String problemName, String dataBaseDirectory, List<Score> scoreList)
+  public BAliBASEMSAProblem(String problemName, String dataBaseDirectory, List<Score> scoreList)
           throws IOException, CompoundNotFoundException {
     super(scoreList);
 

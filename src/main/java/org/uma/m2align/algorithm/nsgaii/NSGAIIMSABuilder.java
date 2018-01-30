@@ -20,7 +20,7 @@ public class NSGAIIMSABuilder extends NSGAIIBuilder<MSASolution> {
    * @param crossoverOperator
    * @param mutationOperator
    */
-  NSGAIIVariant Variant;
+  public NSGAIIVariant Variant;
     
   public NSGAIIMSABuilder(Problem<MSASolution> problem,
       CrossoverOperator<MSASolution> crossoverOperator,

@@ -38,8 +38,7 @@ import org.uma.m2align.solution.MSASolution;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
-import org.uma.m2align.problem.Standard_MSAProblem;
+import org.uma.m2align.problem.StandardMSAProblem;
 import org.uma.m2align.score.Score;
 
 
@@ -54,7 +53,7 @@ public class MOSAStrERunner {
    * @param args Command line arguments.
    */
   public static void main(String[] args) throws Exception {
-    Standard_MSAProblem problem;
+    StandardMSAProblem problem;
     Algorithm<List<MSASolution>> algorithm;
     CrossoverOperator<MSASolution> crossover;
     MutationOperator<MSASolution> mutation;
@@ -82,7 +81,7 @@ public class MOSAStrERunner {
     scoreList.add(new PercentageOfAlignedColumnsScore());
     scoreList.add(new PercentageOfNonGapsScore());
 
-    problem = new Standard_MSAProblem(msaFile, dataDirectory, preComputedAlignments, scoreList);
+    problem = new StandardMSAProblem(msaFile, dataDirectory, preComputedAlignments, scoreList);
 
     objStrike.initializeParameters(dataDirectory, problem.getListOfSequenceNames());
 
@@ -111,7 +110,7 @@ public class MOSAStrERunner {
 
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
 
-  
+
     
     for (MSASolution solution : population) {
       for (int i = 0; i < problem.getNumberOfObjectives(); i++) {

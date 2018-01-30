@@ -192,7 +192,12 @@ public class SPXMSACrossover implements CrossoverOperator<MSASolution> {
   }
 
   @Override
-  public int getNumberOfParents() {
+  public int getNumberOfRequiredParents() {
+    return 2;
+  }
+
+  @Override
+  public int getNumberOfGeneratedChildren() {
     return 2;
   }
 }

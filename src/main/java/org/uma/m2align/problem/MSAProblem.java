@@ -102,7 +102,6 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
   }
 
 
-
   /**
    * CreateSolution() method
    */

@@ -8,12 +8,12 @@ import java.util.List;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.uma.m2align.score.Score;
 
-public class Standard_MSAProblem extends MSAProblem {
+public class StandardMSAProblem extends MSAProblem {
 
   /**
    * Constructor
    */
-  public Standard_MSAProblem(String msaProblemFileName, String dataBaseDirectory, String preComputedFiles, List<Score> scoreList)
+  public StandardMSAProblem(String msaProblemFileName, String dataBaseDirectory, String preComputedFiles, List<Score> scoreList)
           throws IOException, CompoundNotFoundException {
     super(scoreList);
 
