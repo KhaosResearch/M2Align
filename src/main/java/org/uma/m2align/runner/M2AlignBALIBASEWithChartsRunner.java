@@ -31,7 +31,6 @@ import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
 import org.uma.m2align.problem.BAliBASEMSAProblem;
 import org.uma.m2align.score.Score;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
-import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
 import org.uma.m2align.score.impl.StrikeScore;
 import org.uma.m2align.solution.MSASolution;
 import org.uma.m2align.util.ChartContainer2;
@@ -39,7 +38,7 @@ import org.uma.m2align.util.ChartContainer2;
 /**
  * Class to configure and run the NSGA-II algorithm (variant with measures)
  */
-public class MOSAStrEWithChartsRunner  {
+public class M2AlignBALIBASEWithChartsRunner  {
   /**
    * @param args Command line arguments.
    * @throws SecurityException Invoking command: java org.uma.jmetal.runner.multiobjective.NSGAIIMeasuresRunner
@@ -70,8 +69,8 @@ public class MOSAStrEWithChartsRunner  {
 
     StrikeScore objStrike = new StrikeScore();
     scoreList.add(objStrike);
-    //scoreList.add(new PercentageOfAlignedColumnsScore());
-    scoreList.add(new PercentageOfNonGapsScore());
+    scoreList.add(new PercentageOfAlignedColumnsScore());
+    //scoreList.add(new PercentageOfNonGapsScore());
 
     problem = new BAliBASEMSAProblem(instance, dataDirectory, scoreList);
 

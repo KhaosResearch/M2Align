@@ -26,6 +26,8 @@ import java.util.stream.IntStream;
 public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
 
   private BasicMeasure<List<MSASolution>> solutionListMeasure;
+  protected DurationMeasure durationMeasure ;
+
 
   /**
    * Constructor
@@ -39,6 +41,14 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
         selectionOperator, evaluator);
 
     initMeasures();
+  }
+
+  @Override
+  public void run() {
+    durationMeasure.reset();
+    durationMeasure.start();
+    super.run();
+    durationMeasure.stop();
   }
 
   @Override
@@ -98,8 +108,10 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
   private void initMeasures() {
     evaluations = new CountingMeasure(0);
     solutionListMeasure = new BasicMeasure<>();
+    durationMeasure = new DurationMeasure() ;
 
     measureManager = new SimpleMeasureManager();
+    measureManager.setPullMeasure("currentExecutionTime", durationMeasure);
     measureManager.setPushMeasure("currentPopulation", solutionListMeasure);
     measureManager.setPushMeasure("currentEvaluation", evaluations);
   }

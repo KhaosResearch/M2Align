@@ -43,11 +43,11 @@ import org.uma.m2align.score.Score;
 
 
 /**
- * Class to configure and run the MOSAStrE (NSGA-II) algorithm
+ * Class to configure and run the M2Align algorithm to solve a problem from the BALIBASE dataset
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class MOSAStrERunnerBAliBASE {
+public class M2AlignBALIBASERunner {
   /**
    * Arguments: instance,  dataDirectory, maxEvaluations populationSize numberOfCores
    * @param args Command line arguments.
