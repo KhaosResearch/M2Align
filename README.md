@@ -1,6 +1,6 @@
 # M2Align: Multi-Objective Multiple Sequence Alignment
 
-M2Align is a software tool aimed at solving multiple sequence alignment (MSA) problems with a multi-objective metaheuristic. It is implemented by using [jMetal framework](https://github.com/jMetal/jMetal), which is extended with an encoding for representing MSA solutions and its corresponding mutation and crossover operators, and it is able of reducing the computing time by exploiting the computing capabilities of common multi-core CPU computers. 
+M2Align is a software tool aimed at solving multiple sequence alignment (MSA) problems with a multi-objective metaheuristic. It is implemented by using the [jMetal framework](https://github.com/jMetal/jMetal), which is extended with an encoding for representing MSA solutions and its corresponding mutation and crossover operators, and it is able of reducing the computing time by exploiting the computing capabilities of common multi-core CPU computers. 
 
 The tool is described in the paper: "M2Align: parallel multiple sequence alignment with a multi-objective metaheuristic". Cristian Zambrano-Vega, Antonio J. Nebro José García-Nieto, José F. Aldana-Montes. Bioinformatics, Volume 33, Issue 19, 1 October 2017, Pages 3011–3017 ([DOI](https://doi.org/10.1093/bioinformatics/btx338)).
 
@@ -8,7 +8,7 @@ Currently it contains an implementation of the NSGA-II algorithm configured with
 
 ## Summary of features
 M2Align has the following features:
-* Algorithm based on NSGA-II.
+* Evolutionary algorithm based on NSGA-II.
 * Implemented in Java by using the jMetal framework.
 * The variation operators are single-point crossover and closed gap shifting.
 * It allows to optimize the following scores: totally conserved columns, non-gaps pecentage, and STRIKE.
