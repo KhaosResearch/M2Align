@@ -97,7 +97,9 @@ public class M2AlignBALIBASEWithChartsRunner  {
         .<List<MSASolution>>getPushMeasure("currentPopulation");
     CountingMeasure iterationMeasure = (CountingMeasure) measureManager.<Long>getPushMeasure("currentEvaluation");
 
-    ChartContainer<MSASolution> chart = new ChartContainer<>(algorithm.getName(), 200);
+    int displayFrequency = 100 ;
+
+    ChartContainer<MSASolution> chart = new ChartContainer<>(algorithm.getName(), displayFrequency);
     chart.setFrontChart(0, 1, null);
     chart.initChart();
 
