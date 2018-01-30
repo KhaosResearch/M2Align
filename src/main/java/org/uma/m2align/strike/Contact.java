@@ -88,7 +88,6 @@ public class Contact {
       int seq_length = _sequence.length();
       _sequence = _sequence.toUpperCase();
 
-
       _pairs.clear();
       _num_contacts = 0;
       int a, b;
@@ -101,8 +100,9 @@ public class Contact {
 
         for (int k = 1; k < parts.length; k++) {
           b = Integer.parseInt(parts[k]);
-          if (b - a >= min_distance)
+          if (b - a >= min_distance) {
             add_pair(a, b);
+          }
         }
 
       }
@@ -128,8 +128,9 @@ public class Contact {
     System.out.println(_seq_name);
     System.out.println(_sequence);
     int i;
-    for (i = 0; i < _sequence.length(); i++)
+    for (i = 0; i < _sequence.length(); i++) {
       System.out.println(i + " " + _pairs.get(i).toString());
+    }
   }
 
 }

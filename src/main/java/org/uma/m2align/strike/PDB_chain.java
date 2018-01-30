@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class PDB_chain {
-    
-    public char _id;
-    public String _seq_res_string;
-    public String _atom_res_string;
-    public ArrayList<TreeMap< String, Atom>> _atom_list = new ArrayList<TreeMap< String, Atom>>();
 
-    
-    public PDB_chain(char id)
+	public char _id;
+	public String _seq_res_string;
+	public String _atom_res_string;
+	public ArrayList<TreeMap< String, Atom>> _atom_list = new ArrayList<TreeMap< String, Atom>>();
+
+
+	public PDB_chain(char id)
 	{
 		this._id = id;
 		_seq_res_string="";
