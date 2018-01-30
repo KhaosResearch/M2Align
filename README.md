@@ -59,7 +59,7 @@ The Contacts files for each sequence of the dataset will be created into the out
 To execute the MO-SAStrE algorithn to align a particular dataset of sequences, just run this command:
 
 ``` java
-java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.runner.MOSAStrERunner sequencesFileName PDB_ContactsDataDirectory listOfPreComputedAlignments NumberOfEvaluations PopulationSize NumberOfCores
+java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.runner.M2AlignRunner sequencesFileName PDB_ContactsDataDirectory listOfPreComputedAlignments NumberOfEvaluations PopulationSize NumberOfCores
 ```
 * sequencesFileName: the filename of the sequences dataset (in FASTA Format).
 * dataDirectory: The Path that contains the Structural Information files (PDB's (*.pdb) and Strike Contact Matrix (*.contacts)) of the sequences to align and the Pre-Computed alignments to use to generate the Initial population of the algorithm.  
@@ -71,7 +71,7 @@ java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.r
 To execute the algorithm to solve a problem in Balibase, just run this command:
 
 ``` java
-java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.runner.MOSAStrERunnerBAliBASE balibaseProblemName dataDirectory NumberOfEvaluations PopulationSize NumberOfCores
+java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.runner.M2AlignBALIBASE balibaseProblemName dataDirectory NumberOfEvaluations PopulationSize NumberOfCores
 ```
 * balibaseProblemName: the BAliBASE instance name, for instance `BB12001`. 
 * dataDirectory: The Path that contains the Structural Information files (PDB's (*.pdb) and Strike Contact Matrix (*.contacts)) of the sequences to align and the Pre-Computed alignments to use to generate the Initial population of the algorithm.  
