@@ -6,20 +6,19 @@
 package org.uma.m2align.strike;
 
 /**
- *
  * @author Cristian
  */
 public class testingStrike {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-	PDB pdb = new PDB();	
-	pdb.read_pdb("C:\\msa\\aligned\\strike\\RV11\\BB11001\\1aab_.pdb", true);
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(String[] args) {
+    // TODO code application logic here
+    PDB pdb = new PDB();
+    pdb.read_pdb("C:\\msa\\aligned\\strike\\RV11\\BB11001\\1aab_.pdb", true);
 
-        
-    }
-    
+
+  }
+
 }

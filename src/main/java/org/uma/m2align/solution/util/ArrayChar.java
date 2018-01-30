@@ -1,8 +1,7 @@
 package org.uma.m2align.solution.util;
 
-import org.uma.jmetal.util.JMetalException;
-
 import java.util.Arrays;
+import org.uma.jmetal.util.JMetalException;
 
 /**
  * @author Antonio J. Nebro <antonio@lcc.uma.es>

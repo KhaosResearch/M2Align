@@ -1,8 +1,7 @@
 package org.uma.m2align.score.impl;
 
-import org.uma.m2align.problem.DynamicallyComposedProblem;
-import org.uma.m2align.solution.MSASolution;
 import org.uma.m2align.score.Score;
+import org.uma.m2align.solution.MSASolution;
 
 /**
  * @author Antonio J. Nebro <antonio@lcc.uma.es>

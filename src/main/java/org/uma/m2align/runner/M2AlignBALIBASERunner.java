@@ -13,8 +13,9 @@
 
 package org.uma.m2align.runner;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder.NSGAIIVariant;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
@@ -28,48 +29,42 @@ import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
-import org.uma.m2align.algorithm.nsgaii.NSGAIIMSABuilder;
+import org.uma.m2align.algorithm.M2AlignBuilder;
 import org.uma.m2align.crossover.SPXMSACrossover;
 import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
+import org.uma.m2align.problem.BAliBASEMSAProblem;
+import org.uma.m2align.score.Score;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
 import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
 import org.uma.m2align.score.impl.StrikeScore;
 import org.uma.m2align.solution.MSASolution;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
-import org.uma.m2align.problem.Standard_MSAProblem;
-import org.uma.m2align.score.Score;
-
 
 /**
- * Class to configure and run the MOSAStrE (NSGA-II) algorithm
+ * Class to configure and run the M2Align algorithm to solve a problem from the BALIBASE dataset
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class MOSAStrERunner {
+public class M2AlignBALIBASERunner {
   /**
-   * Arguments: msaFileName,  dataDirectory, preComputedAlignments, maxEvaluations populationSize numberOfCores
+   * Arguments: instance,  dataDirectory, maxEvaluations populationSize numberOfCores
    * @param args Command line arguments.
    */
   public static void main(String[] args) throws Exception {
-    Standard_MSAProblem problem;
+    BAliBASEMSAProblem problem;
     Algorithm<List<MSASolution>> algorithm;
     CrossoverOperator<MSASolution> crossover;
     MutationOperator<MSASolution> mutation;
     SelectionOperator selection;
 
-    if (args.length != 6) {
+    if (args.length != 5) {
       throw new JMetalException("Wrong number of arguments") ;
     }
-
-    String msaFile = args[0];
+    String instance = args[0];
     String dataDirectory = args[1];
-    String preComputedAlignments = args[2];
-    Integer maxEvaluations = Integer.parseInt(args[3]);
-    Integer populationSize = Integer.parseInt(args[4]);
-    Integer numberOfCores = Integer.parseInt(args[5]);
+    Integer maxEvaluations = Integer.parseInt(args[2]);
+    Integer populationSize = Integer.parseInt(args[3]);
+    Integer numberOfCores = Integer.parseInt(args[4]);
     
     crossover = new SPXMSACrossover(0.8);
     mutation = new ShiftClosedGapsMSAMutation(0.2);
@@ -82,9 +77,9 @@ public class MOSAStrERunner {
     scoreList.add(new PercentageOfAlignedColumnsScore());
     scoreList.add(new PercentageOfNonGapsScore());
 
-    problem = new Standard_MSAProblem(msaFile, dataDirectory, preComputedAlignments, scoreList);
+    problem = new BAliBASEMSAProblem(instance, dataDirectory, scoreList);
 
-    objStrike.initializeParameters(dataDirectory, problem.getListOfSequenceNames());
+    objStrike.initializeParameters(problem.PDBPath, problem.getListOfSequenceNames());
 
     SolutionListEvaluator<MSASolution> evaluator;
 
@@ -95,7 +90,7 @@ public class MOSAStrERunner {
       evaluator = new MultithreadedSolutionListEvaluator<MSASolution>(numberOfCores, problem);
     }
 
-    algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
+    algorithm = new M2AlignBuilder(problem, crossover, mutation)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
             .setPopulationSize(populationSize)
@@ -110,8 +105,6 @@ public class MOSAStrERunner {
     long computingTime = algorithmRunner.getComputingTime();
 
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
-
-  
     
     for (MSASolution solution : population) {
       for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -120,10 +113,10 @@ public class MOSAStrERunner {
         }
       }
     }
-
-    DefaultFileOutputContext varFile = new  DefaultFileOutputContext("VAR.tsv");
+       
+    DefaultFileOutputContext varFile = new  DefaultFileOutputContext("VAR." + instance + ".tsv");
     varFile.setSeparator("\n");
-    DefaultFileOutputContext funFile = new  DefaultFileOutputContext("FUN.tsv");
+    DefaultFileOutputContext funFile = new  DefaultFileOutputContext("FUN." + instance + ".tsv");
     funFile.setSeparator("\t");
 
    
@@ -133,5 +126,6 @@ public class MOSAStrERunner {
             .print();
 
     evaluator.shutdown();
+    
   }
 }

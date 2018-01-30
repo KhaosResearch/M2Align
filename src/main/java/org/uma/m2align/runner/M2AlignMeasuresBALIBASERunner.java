@@ -13,48 +13,51 @@
 
 package org.uma.m2align.runner;
 
-import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder.NSGAIIVariant;
+import java.util.ArrayList;
+import java.util.List;
+import org.uma.jmetal.measure.MeasureListener;
+import org.uma.jmetal.measure.MeasureManager;
+import org.uma.jmetal.measure.impl.BasicMeasure;
+import org.uma.jmetal.measure.impl.CountingMeasure;
+import org.uma.jmetal.measure.impl.DurationMeasure;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
-import org.uma.jmetal.util.AlgorithmRunner;
+import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
-
-import java.util.ArrayList;
-import java.util.List;
-import org.uma.jmetal.util.JMetalException;
-import org.uma.jmetal.util.JMetalLogger;
-import org.uma.m2align.algorithm.nsgaii.NSGAIIMSABuilder;
+import org.uma.m2align.algorithm.M2Align;
+import org.uma.m2align.algorithm.M2AlignBuilder;
 import org.uma.m2align.crossover.SPXMSACrossover;
 import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
+import org.uma.m2align.problem.BAliBASEMSAProblem;
+import org.uma.m2align.score.Score;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
 import org.uma.m2align.score.impl.PercentageOfNonGapsScore;
 import org.uma.m2align.score.impl.StrikeScore;
-import org.uma.m2align.problem.BAliBASE_MSAProblem;
 import org.uma.m2align.solution.MSASolution;
-import org.uma.m2align.score.Score;
 
 
 /**
- * Class to configure and run the MOSAStrE (NSGA-II) algorithm
+ * Class to configure and run the M2Align algorithm to solve a problem from the BALIBASE dataset
+ * providing runtime information
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class MOSAStrERunnerBAliBASE {
+public class M2AlignMeasuresBALIBASERunner {
   /**
    * Arguments: instance,  dataDirectory, maxEvaluations populationSize numberOfCores
    * @param args Command line arguments.
    */
   public static void main(String[] args) throws Exception {
-    BAliBASE_MSAProblem problem;
-    Algorithm<List<MSASolution>> algorithm;
+    BAliBASEMSAProblem problem;
+    M2Align algorithm;
     CrossoverOperator<MSASolution> crossover;
     MutationOperator<MSASolution> mutation;
     SelectionOperator selection;
@@ -79,7 +82,7 @@ public class MOSAStrERunnerBAliBASE {
     scoreList.add(new PercentageOfAlignedColumnsScore());
     scoreList.add(new PercentageOfNonGapsScore());
 
-    problem = new BAliBASE_MSAProblem(instance, dataDirectory, scoreList);
+    problem = new BAliBASEMSAProblem(instance, dataDirectory, scoreList);
 
     objStrike.initializeParameters(problem.PDBPath, problem.getListOfSequenceNames());
 
@@ -92,19 +95,34 @@ public class MOSAStrERunnerBAliBASE {
       evaluator = new MultithreadedSolutionListEvaluator<MSASolution>(numberOfCores, problem);
     }
 
-    algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
+    algorithm = (M2Align) new M2AlignBuilder(problem, crossover, mutation)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
             .setPopulationSize(populationSize)
             .setSolutionListEvaluator(evaluator)
             .build();
 
+    System.out.println("Algorithm " + algorithm.getName() + " running") ;
 
-    AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
-            .execute();
+    MeasureManager measureManager = algorithm.getMeasureManager() ;
 
+    DurationMeasure currentComputingTime =
+        (DurationMeasure) measureManager.<Long>getPullMeasure("currentExecutionTime");
+
+    BasicMeasure<List<MSASolution>> solutionListMeasure =
+        (BasicMeasure<List<MSASolution>>) measureManager.<List<MSASolution>> getPushMeasure("currentPopulation");
+    CountingMeasure iterationMeasure =
+        (CountingMeasure) measureManager.<Long>getPushMeasure("currentEvaluation");
+
+    solutionListMeasure.register(new SolutionListListener());
+    iterationMeasure.register(new IterationListener());
+
+    Thread algorithmThread = new Thread(algorithm) ;
+    algorithmThread.start();
+
+    algorithmThread.join();
     List<MSASolution> population = algorithm.getResult();
-    long computingTime = algorithmRunner.getComputingTime();
+    long computingTime = currentComputingTime.get() ;
 
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
     
@@ -120,7 +138,6 @@ public class MOSAStrERunnerBAliBASE {
     varFile.setSeparator("\n");
     DefaultFileOutputContext funFile = new  DefaultFileOutputContext("FUN." + instance + ".tsv");
     funFile.setSeparator("\t");
-
    
     new SolutionListOutput(population)
             .setVarFileOutputContext(varFile)
@@ -128,6 +145,27 @@ public class MOSAStrERunnerBAliBASE {
             .print();
 
     evaluator.shutdown();
-    
+  }
+
+  private static class SolutionListListener implements MeasureListener<List<MSASolution>> {
+    private int counter = 0 ;
+
+    @Override  public void measureGenerated(List<MSASolution> solutions) {
+      System.out.println("PUSH MEASURE. Counter = " + counter+ " First solution: " + solutions.get(0)) ;
+      if ((counter % 10 == 0)) {
+        System.out.println("PUSH MEASURE. Counter = " + counter+ " First solution: " + solutions.get(0)) ;
+      }
+      counter ++ ;
+    }
+  }
+
+  private static class IterationListener implements MeasureListener<Long> {
+    @Override  public void measureGenerated(Long value) {
+      System.out.println("PUSH MEASURE. Iteration: " + value) ;
+      if ((value % 50 == 0)) {
+        System.out.println("PUSH MEASURE. Iteration: " + value) ;
+      }
+    }
   }
 }
+

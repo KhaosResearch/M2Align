@@ -1,5 +1,7 @@
-package org.uma.m2align.algorithm.nsgaii;
+package org.uma.m2align.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIMeasures;
 import org.uma.jmetal.measure.impl.BasicMeasure;
 import org.uma.jmetal.measure.impl.CountingMeasure;
@@ -8,40 +10,44 @@ import org.uma.jmetal.measure.impl.SimpleMeasureManager;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.MSASolution;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 /**
+ * Class implementing the M2Align algorithm published in:
+ *
+ *
  * @author Antonio J. Nebro
- * @version 1.0
+ * @author Cristian Zambrano
+ * @version 1.1
  */
-public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
-  private CountingMeasure evaluations;
-  private DurationMeasure durationMeasure;
-  private SimpleMeasureManager measureManager;
+public class M2Align extends NSGAIIMeasures<MSASolution> {
 
   private BasicMeasure<List<MSASolution>> solutionListMeasure;
-  private BasicMeasure<Integer> numberOfNonDominatedSolutionsInPopulation;
+  protected DurationMeasure durationMeasure ;
+
 
   /**
    * Constructor
    */
-  public NSGAIIMSA(MSAProblem problem, int maxIterations, int populationSize,
-                   CrossoverOperator<MSASolution> crossoverOperator,
-                   MutationOperator<MSASolution> mutationOperator,
-                   SelectionOperator<List<MSASolution>, MSASolution> selectionOperator,
-                   SolutionListEvaluator<MSASolution> evaluator) {
-    super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator, evaluator);
-
+  public M2Align(MSAProblem problem, int maxEvaluations, int populationSize,
+      CrossoverOperator<MSASolution> crossoverOperator,
+      MutationOperator<MSASolution> mutationOperator,
+      SelectionOperator<List<MSASolution>, MSASolution> selectionOperator,
+      SolutionListEvaluator<MSASolution> evaluator) {
+    super(problem, maxEvaluations, populationSize, crossoverOperator, mutationOperator,
+        selectionOperator, evaluator);
 
     initMeasures();
+  }
+
+  @Override
+  public void run() {
+    durationMeasure.reset();
+    durationMeasure.start();
+    super.run();
+    durationMeasure.stop();
   }
 
   @Override
@@ -51,7 +57,7 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
 
   @Override
   protected List<MSASolution> reproduction(List<MSASolution> population) {
-    int numberOfParents = crossoverOperator.getNumberOfParents() ;
+    int numberOfParents = crossoverOperator.getNumberOfRequiredParents();
 
     checkNumberOfParents(population, numberOfParents);
 
@@ -59,12 +65,12 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
     for (int i = 0; i < getMaxPopulationSize(); i += numberOfParents) {
       List<MSASolution> parents = new ArrayList<>(numberOfParents);
       for (int j = 0; j < numberOfParents; j++) {
-        parents.add(population.get(i+j));
+        parents.add(population.get(i + j));
       }
 
       List<MSASolution> offspring = crossoverOperator.execute(parents);
 
-      for(MSASolution s: offspring){
+      for (MSASolution s : offspring) {
         mutationOperator.execute(s);
         offspringPopulation.add(s);
       }
@@ -73,36 +79,49 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
     return offspringPopulation;
   }
 
-  @Override protected List<MSASolution> evaluatePopulation(List<MSASolution> population) {
-      population = evaluator.evaluate(population, getProblem());
-      //population.parallelStream().forEach(s -> getProblem().evaluate(s)) ;
+  @Override
+  protected List<MSASolution> evaluatePopulation(List<MSASolution> population) {
+    population = evaluator.evaluate(population, getProblem());
+    //population.parallelStream().forEach(s -> getProblem().evaluate(s)) ;
 
     return population;
   }
 
+  @Override
+  protected void initProgress() {
+    evaluations.reset(getMaxPopulationSize());
+  }
+
+  @Override
+  protected void updateProgress() {
+    evaluations.increment(getMaxPopulationSize());
+    solutionListMeasure.push(getPopulation());
+  }
+
+  @Override
+  protected boolean isStoppingConditionReached() {
+    return evaluations.get() >= maxEvaluations;
+  }
+
   /* Measures code */
   private void initMeasures() {
-    durationMeasure = new DurationMeasure();
     evaluations = new CountingMeasure(0);
-    numberOfNonDominatedSolutionsInPopulation = new BasicMeasure<>();
     solutionListMeasure = new BasicMeasure<>();
+    durationMeasure = new DurationMeasure() ;
 
     measureManager = new SimpleMeasureManager();
     measureManager.setPullMeasure("currentExecutionTime", durationMeasure);
-    measureManager.setPullMeasure("currentEvaluation", evaluations);
-    measureManager.setPullMeasure("numberOfNonDominatedSolutionsInPopulation", numberOfNonDominatedSolutionsInPopulation);
-
     measureManager.setPushMeasure("currentPopulation", solutionListMeasure);
     measureManager.setPushMeasure("currentEvaluation", evaluations);
   }
 
   @Override
   public String getName() {
-    return "NSGAII";
+    return "NSGAIIMSA";
   }
 
   @Override
   public String getDescription() {
-    return "NSGAII";
+    return "NSGAIIMSA";
   }
 }

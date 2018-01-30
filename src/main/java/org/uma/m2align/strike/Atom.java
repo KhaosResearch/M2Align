@@ -19,8 +19,6 @@
 
 package org.uma.m2align.strike;
 
-import java.util.*;
-
 public class Atom {
     
     	private String _chain_ID;

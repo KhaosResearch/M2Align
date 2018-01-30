@@ -7,7 +7,8 @@ import java.util.List;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.uma.m2align.score.Score;
 
-public class BAliBASE_MSAProblem extends MSAProblem {
+public class BAliBASEMSAProblem extends MSAProblem {
+
   public String PDBPath;
   public String InstanceBalibase;
   public String BalibasePath;
@@ -16,11 +17,11 @@ public class BAliBASE_MSAProblem extends MSAProblem {
   /**
    * Constructor
    */
-  public BAliBASE_MSAProblem(String problemName, String dataBaseDirectory, List<Score> scoreList)
-          throws IOException, CompoundNotFoundException {
+  public BAliBASEMSAProblem(String problemName, String dataBaseDirectory, List<Score> scoreList)
+      throws IOException, CompoundNotFoundException {
     super(scoreList);
 
-     setName(problemName);
+    setName(problemName);
 
     setPaths(problemName, dataBaseDirectory);
     List<String> dataFiles = new ArrayList<>();
@@ -42,11 +43,8 @@ public class BAliBASE_MSAProblem extends MSAProblem {
     setNumberOfConstraints(0);
 
     listOfPrecomputedStringAlignments = readPreComputedAlignments(dataFiles);
-
   }
 
-
-  
   public void setPaths(String problemName, String dataBaseDirectory) {
 
     String Group = "RV" + problemName.substring(2, 4).toString();
@@ -61,9 +59,5 @@ public class BAliBASE_MSAProblem extends MSAProblem {
 
     //Directory with the PreAlignments
     PreComputedPath = dataBaseDirectory + "/aligned/" + Group + "/" + InstanceBalibase;
-
-
   }
-
- 
 }
