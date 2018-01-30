@@ -25,7 +25,6 @@ import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
-import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
@@ -34,8 +33,8 @@ import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
-import org.uma.m2align.algorithm.nsgaii.NSGAIIMSA;
-import org.uma.m2align.algorithm.nsgaii.NSGAIIMSABuilder;
+import org.uma.m2align.algorithm.M2Align;
+import org.uma.m2align.algorithm.M2AlignBuilder;
 import org.uma.m2align.crossover.SPXMSACrossover;
 import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
 import org.uma.m2align.problem.BAliBASEMSAProblem;
@@ -59,7 +58,7 @@ public class M2AlignMeasuresBALIBASERunner {
    */
   public static void main(String[] args) throws Exception {
     BAliBASEMSAProblem problem;
-    NSGAIIMSA algorithm;
+    M2Align algorithm;
     CrossoverOperator<MSASolution> crossover;
     MutationOperator<MSASolution> mutation;
     SelectionOperator selection;
@@ -97,7 +96,7 @@ public class M2AlignMeasuresBALIBASERunner {
       evaluator = new MultithreadedSolutionListEvaluator<MSASolution>(numberOfCores, problem);
     }
 
-    algorithm = (NSGAIIMSA) new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
+    algorithm = (M2Align) new M2AlignBuilder(problem, crossover, mutation)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
             .setPopulationSize(populationSize)

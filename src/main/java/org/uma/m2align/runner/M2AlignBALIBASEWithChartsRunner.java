@@ -7,7 +7,6 @@ import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.knowm.xchart.BitmapEncoder.BitmapFormat;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder.NSGAIIVariant;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIMeasures;
 import org.uma.jmetal.measure.MeasureListener;
 import org.uma.jmetal.measure.MeasureManager;
 import org.uma.jmetal.measure.impl.BasicMeasure;
@@ -16,7 +15,6 @@ import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
-import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
@@ -24,8 +22,8 @@ import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
-import org.uma.m2align.algorithm.nsgaii.NSGAIIMSA;
-import org.uma.m2align.algorithm.nsgaii.NSGAIIMSABuilder;
+import org.uma.m2align.algorithm.M2Align;
+import org.uma.m2align.algorithm.M2AlignBuilder;
 import org.uma.m2align.crossover.SPXMSACrossover;
 import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
 import org.uma.m2align.problem.BAliBASEMSAProblem;
@@ -33,7 +31,7 @@ import org.uma.m2align.score.Score;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
 import org.uma.m2align.score.impl.StrikeScore;
 import org.uma.m2align.solution.MSASolution;
-import org.uma.m2align.util.ChartContainer2;
+import org.uma.m2align.util.ChartContainer;
 
 /**
  * Class to configure and run the NSGA-II algorithm (variant with measures)
@@ -85,7 +83,7 @@ public class M2AlignBALIBASEWithChartsRunner  {
       evaluator = new MultithreadedSolutionListEvaluator<MSASolution>(numberOfCores, problem);
     }
 
-    algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
+    algorithm = new M2AlignBuilder(problem, crossover, mutation)
         .setSelectionOperator(selection)
         .setMaxEvaluations(maxEvaluations)
         .setPopulationSize(populationSize)
@@ -93,14 +91,14 @@ public class M2AlignBALIBASEWithChartsRunner  {
         .build();
 
 
-    MeasureManager measureManager = ((NSGAIIMSA) algorithm).getMeasureManager();
+    MeasureManager measureManager = ((M2Align) algorithm).getMeasureManager();
 
     /* Measure management */
     BasicMeasure<List<MSASolution>> solutionListMeasure = (BasicMeasure<List<MSASolution>>) measureManager
         .<List<MSASolution>>getPushMeasure("currentPopulation");
     CountingMeasure iterationMeasure = (CountingMeasure) measureManager.<Long>getPushMeasure("currentEvaluation");
 
-    ChartContainer2<MSASolution> chart = new ChartContainer2<>(algorithm.getName(), 200);
+    ChartContainer<MSASolution> chart = new ChartContainer<>(algorithm.getName(), 200);
     chart.setFrontChart(0, 1, null);
     chart.initChart();
 
@@ -117,10 +115,10 @@ public class M2AlignBALIBASEWithChartsRunner  {
   }
 
   private static class ChartListener implements MeasureListener<List<MSASolution>> {
-    private ChartContainer2<MSASolution> chart;
+    private ChartContainer<MSASolution> chart;
     private int iteration = 0;
 
-    public ChartListener(ChartContainer2<MSASolution> chart) {
+    public ChartListener(ChartContainer<MSASolution> chart) {
       this.chart = chart;
       this.chart.getFrontChart().setTitle("Iteration: " + this.iteration);
     }
@@ -141,9 +139,9 @@ public class M2AlignBALIBASEWithChartsRunner  {
   }
 
   private static class IterationListener implements MeasureListener<Long> {
-    ChartContainer2<MSASolution> chart;
+    ChartContainer<MSASolution> chart;
 
-    public IterationListener(ChartContainer2<MSASolution> chart) {
+    public IterationListener(ChartContainer<MSASolution> chart) {
       this.chart = chart;
       this.chart.getFrontChart().setTitle("Iteration: " + 0);
     }

@@ -12,27 +12,21 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package org.uma.m2align.util;
-
-import java.awt.Color;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import org.knowm.xchart.BitmapEncoder;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries;
+import org.knowm.xchart.*;
+import org.knowm.xchart.BitmapEncoder.BitmapFormat;
+import org.knowm.xchart.XYSeries.XYSeriesRenderStyle;
 import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.util.fileoutput.SolutionListOutput;
+import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.front.imp.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontUtils;
+
+import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class for configuring and displaying a XChart.
@@ -53,7 +47,8 @@ public class ChartContainer<S extends Solution<?>> {
   private int variable2;
   private Map<String, List<Integer>> iterations;
   private Map<String, List<Double>> indicatorValues;
-  private String referenceName;
+
+  private int updateCounter = 1 ;
 
   public ChartContainer(String name) {
     this(name, 0);
@@ -65,7 +60,6 @@ public class ChartContainer<S extends Solution<?>> {
     this.charts = new LinkedHashMap<String, XYChart>();
     this.iterations = new HashMap<String, List<Integer>>();
     this.indicatorValues = new HashMap<String, List<Double>>();
-    this.referenceName = null;
   }
 
   public void setFrontChart(int objective1, int objective2) throws FileNotFoundException {
@@ -73,167 +67,65 @@ public class ChartContainer<S extends Solution<?>> {
   }
 
   public void setFrontChart(int objective1, int objective2, String referenceFrontFileName) throws FileNotFoundException {
-    try {
-      this.objective1 = objective1;
-      this.objective2 = objective2;
-      this.frontChart = new XYChartBuilder().xAxisTitle("Objective " + this.objective1)
-              .yAxisTitle("Objective " + this.objective2).build();
-      this.frontChart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter).setMarkerSize(5);
-      if (referenceFrontFileName != null) {
-        this.displayReferenceFront(referenceFrontFileName);
-      }
+    this.objective1 = objective1;
+    this.objective2 = objective2;
+    this.frontChart = new XYChartBuilder().xAxisTitle("Objective " + this.objective1)
+        .yAxisTitle("Objective " + this.objective2).build();
+    this.frontChart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Scatter).setMarkerSize(5);
 
-      double[] xData = new double[]{1};
-      double[] yData = new double[]{1};
-      XYSeries frontChartSeries = this.frontChart.addSeries(this.name, xData, yData);
-      frontChartSeries.setMarkerColor(Color.blue);
-
-      this.charts.put("Front", this.frontChart);
-    }catch (Exception e){
-
+    if (referenceFrontFileName != null) {
+      this.displayReferenceFront(referenceFrontFileName);
     }
+
+    double[] xData = new double[] { 0 };
+    double[] yData = new double[] { 0 };
+    XYSeries frontChartSeries = this.frontChart.addSeries(this.name, xData, yData);
+    frontChartSeries.setMarkerColor(Color.blue);
+
+    this.charts.put("Front", this.frontChart);
   }
 
-  public void setReferencePoint(List<Double> referencePoint) {
-    try {
-      double rp1 = referencePoint.get(this.objective1);
-      double rp2 = referencePoint.get(this.objective2);
-      if (referenceName != null) {
-        //this.changeColorFrontChart(Color.GRAY);
-        this.frontChart.removeSeries(referenceName);
-      }
-      referenceName = "Reference Point [" + rp1 + ", " + rp2 + "]";
+  public void setReferencePoint(List<List<Double>> referencePoint){
+    for (int i = 0; i < referencePoint.size(); i++) {
+      double rp1 = referencePoint.get(i).get(this.objective1);
+      double rp2 = referencePoint.get(i).get(this.objective2);
 
-      XYSeries referencePointSeries = this.frontChart.addSeries(referenceName,
-              new double[]{rp1},
-              new double[]{rp2});
-      referencePointSeries.setShowInLegend(true);
-      orderAllFront();
-
-      // referencePointSeries.setMarkerColor(Color.green);
-    }catch(Exception e){
-
+      XYSeries referencePointSeries = this.frontChart.addSeries("Reference Point ["+ rp1 + ", " + rp2 + "]",
+          new double[] { rp1 },
+          new double[] { rp2 });
+      referencePointSeries.setMarkerColor(Color.green);
     }
-
-  }
-
-  private void deleteAllFront() {
-    if (this.frontChart != null && this.frontChart.getSeriesMap() != null) {
-      Set<String> keys = this.frontChart.getSeriesMap().keySet();
-      if (keys != null) {
-        Object[] obj = keys.toArray();
-        if (obj != null) {
-          String[] listFront = new String[obj.length];
-          for (int i = 0; i < obj.length; i++) {
-            listFront[i] = obj[i].toString();
-          }
-          for (int i = 0; i < listFront.length; i++) {
-            String name = listFront[i];
-            if (name != this.name && !name.contains("Reference") && this.frontChart.getSeriesMap().get(name).getMarkerColor() != Color.GRAY) {
-              this.frontChart.removeSeries(name);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  private void orderAllFront() {
-    try{
-    if (this.frontChart != null && this.frontChart.getSeriesMap() != null) {
-      Set<String> keys = this.frontChart.getSeriesMap().keySet();
-      if (keys != null) {
-        Object[] obj = keys.toArray();
-        if (obj != null) {
-          String[] listFront = new String[obj.length];
-          for (int i = 0; i < obj.length; i++) {
-            listFront[i] = obj[i].toString();
-          }
-          for (int i = 0; i < listFront.length; i++) {
-            String name = listFront[i];
-            if (name != this.name && !name.contains("Reference")) {
-              XYSeries xy = this.frontChart.getSeriesMap().get(name);
-              this.frontChart.removeSeries(name);
-
-              this.frontChart.addSeries(name, generateArray(xy.getXData()), generateArray(xy.getYData()));
-            }
-          }
-          this.changeColorFrontChart(Color.lightGray);
-        }
-      }
-    }
-    }catch (Exception e){
-
-    }
-  }
-
-  private double[] generateArray(Collection collection) {
-    double[] result = null;
-    if (collection != null) {
-      result = new double[collection.size()];
-      Object[] aux = collection.toArray();
-      for (int i = 0; i < aux.length; i++) {
-        result[i] = Double.parseDouble(aux[i].toString());
-      }
-    }
-    return result;
-  }
-
-  public void setVarChart(int variable1, int variable2) {
-    this.variable1 = variable1;
-    this.variable2 = variable2;
-    this.varChart = new XYChartBuilder().xAxisTitle("Variable " + this.variable1)
-            .yAxisTitle("Variable " + this.variable2).build();
-
-    this.varChart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter).setMarkerSize(5);
-
-    double[] xData = new double[]{0};
-    double[] yData = new double[]{0};
-
-    XYSeries varChartSeries = this.varChart.addSeries(this.name, xData, yData);
-    varChartSeries.setMarkerColor(Color.blue);
-
-    this.charts.put("VAR", this.varChart);
   }
 
   public void initChart() {
-    try {
-      this.sw = new SwingWrapper<XYChart>(new ArrayList<XYChart>(this.charts.values()));
-      this.sw.displayChartMatrix(this.name);
-    }catch(Exception e){
-
-    }
+    this.sw = new SwingWrapper<XYChart>(new ArrayList<XYChart>(this.charts.values()));
+    this.sw.displayChartMatrix(this.name);
   }
 
-  public void updateFrontCharts(List<S> solutionList, int counter) {
+  public void updateFrontCharts(List<S> solutionList) {
     if (this.frontChart != null) {
-      if (this.frontChart.getSeriesMap() != null) {
-        // this.deleteAllFront();//delete the other fronts
+      this.frontChart.updateXYSeries(this.name,
+          this.getSolutionsForObjective(solutionList, this.objective1),
+          this.getSolutionsForObjective(solutionList, this.objective2),
+          null);
+
+      System.out.println("Iter: " + updateCounter);
+      for (int i = 0; i < solutionList.size(); i++) {
+        S s = solutionList.get(i);
       }
+      System.out.println() ;
+      System.out.println() ;
+      System.out.println() ;
 
-      System.out.println("Update front chars. Front." + counter) ;
+      new SolutionListOutput(solutionList)
+          .setSeparator("\t")
+          .setFunFileOutputContext(new DefaultFileOutputContext("" + updateCounter + ".tsv"))
+          .print();
 
-      this.frontChart.addSeries("Front" + counter,
-              this.getSolutionsForObjective(solutionList, this.objective1),
-              this.getSolutionsForObjective(solutionList, this.objective2),
-              null);
-    }
-  }
-
-  private void changeColorFrontChart(Color color) {
-    if (this.frontChart.getSeriesMap() != null) {
-      Set<String> keys = this.frontChart.getSeriesMap().keySet();
-      Iterator<String> it = keys.iterator();
-      while (it.hasNext()) {
-        String name = it.next();
-        if (!name.contains("Reference") && name != this.name) {
-          this.frontChart.getSeriesMap().get(name).setMarkerColor(color);
-        }
-      }
+      updateCounter++ ;
 
     }
   }
-
 
   public void refreshCharts() {
     this.refreshCharts(this.delay);
@@ -251,41 +143,9 @@ public class ChartContainer<S extends Solution<?>> {
     this.repaint();
   }
 
-  public void addIndicatorChart(String indicator) {
-    XYChart indicatorChart = new XYChartBuilder().xAxisTitle("n").yAxisTitle(indicator).build();
-    indicatorChart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter).setMarkerSize(5);
-
-    List<Integer> indicatorIterations = new ArrayList<Integer>();
-    indicatorIterations.add(0);
-    List<Double> indicatorValues = new ArrayList<Double>();
-    indicatorValues.add(0.0);
-
-    XYSeries indicatorSeries = indicatorChart.addSeries(this.name, indicatorIterations, indicatorValues);
-    indicatorSeries.setMarkerColor(Color.blue);
-
-    this.iterations.put(indicator, indicatorIterations);
-    this.indicatorValues.put(indicator, indicatorValues);
-    this.charts.put(indicator, indicatorChart);
-  }
-
-  public void removeIndicator(String indicator) {
-    this.iterations.remove(indicator);
-    this.indicatorValues.remove(indicator);
-    this.charts.remove(indicator);
-  }
-
-  public void updateIndicatorChart(String indicator, Double value) {
-    this.indicatorValues.get(indicator).add(value);
-    this.iterations.get(indicator).add(this.indicatorValues.get(indicator).size());
-
-    this.charts.get(indicator).updateXYSeries(this.name, this.iterations.get(indicator),
-            this.indicatorValues.get(indicator), null);
-  }
-
   public void repaint() {
     try {
       for (int i = 0; i < this.charts.values().size(); i++) {
-        //System.out.println("Size: " + charts.values().size()) ;
         this.sw.repaintChart(i);
       }
     } catch (IndexOutOfBoundsException e) {
@@ -295,7 +155,7 @@ public class ChartContainer<S extends Solution<?>> {
   }
 
   private void displayFront(String name, String fileName, int objective1, int objective2)
-          throws FileNotFoundException {
+      throws FileNotFoundException {
     ArrayFront front = new ArrayFront(fileName);
     double[][] data = FrontUtils.convertFrontToArray(front);
     double[] xData = getObjectiveValues(data, objective1);
@@ -329,7 +189,7 @@ public class ChartContainer<S extends Solution<?>> {
   }
 
 
-  public void saveChart(String fileName, BitmapEncoder.BitmapFormat format) throws IOException {
+  public void saveChart(String fileName, BitmapFormat format) throws IOException {
     for (String chart : this.charts.keySet()) {
       BitmapEncoder.saveBitmap(this.charts.get(chart), fileName + "_" + chart, format);
     }

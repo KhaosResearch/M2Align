@@ -1,4 +1,4 @@
-package org.uma.m2align.algorithm.nsgaii;
+package org.uma.m2align.algorithm;
 
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIMeasures;
 import org.uma.jmetal.measure.impl.BasicMeasure;
@@ -8,22 +8,18 @@ import org.uma.jmetal.measure.impl.SimpleMeasureManager;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.MSASolution;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * @author Antonio J. Nebro
  * @version 1.0
  */
-public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
+public class M2Align extends NSGAIIMeasures<MSASolution> {
 
   private BasicMeasure<List<MSASolution>> solutionListMeasure;
   protected DurationMeasure durationMeasure ;
@@ -32,7 +28,7 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
   /**
    * Constructor
    */
-  public NSGAIIMSA(MSAProblem problem, int maxEvaluations, int populationSize,
+  public M2Align(MSAProblem problem, int maxEvaluations, int populationSize,
       CrossoverOperator<MSASolution> crossoverOperator,
       MutationOperator<MSASolution> mutationOperator,
       SelectionOperator<List<MSASolution>, MSASolution> selectionOperator,
