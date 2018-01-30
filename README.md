@@ -22,9 +22,11 @@ To download M2Align just clone the Git repository hosted in GitHub:
 git clone https://github.com/KhaosResearch/M2Align.git
 ```
 Once cloned, you can compile the software and generate a jar file with the following command:
+
 ```
 mvn package
 ```
+
 This sentence will generate a directory called `target` which will contain a file called `m2align-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
 ## Download PDB files and Generation of the Strike Contact Matrix files
@@ -33,7 +35,7 @@ M2Align provides a utility to download the PDB structures files from the [Protei
 
 To execute this utility and get all the structural information requeried by STRIKE measure, run this command:
 
-```
+```java
 java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.strike.GenerateStructuralInformation sequencesFileName outputDirectory pathToStrike_contactgenerator
 
 ```
@@ -48,7 +50,7 @@ The Contacts files for each sequence of the dataset will be created into the out
 
 To execute the MO-SAStrE algorithn to align a particular dataset of sequences, just run this command:
 
-````
+``` java
 java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.runner.MOSAStrERunner sequencesFileName PDB_ContactsDataDirectory listOfPreComputedAlignments NumberOfEvaluations PopulationSize NumberOfCores
 ```
 * sequencesFileName: the filename of the sequences dataset (in FASTA Format).
@@ -60,7 +62,7 @@ java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.r
 
 To execute the algorithm to solve a problem in Balibase, just run this command:
 
-````
+``` java
 java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.runner.MOSAStrERunnerBAliBASE balibaseProblemName dataDirectory NumberOfEvaluations PopulationSize NumberOfCores
 ```
 * balibaseProblemName: the BAliBASE instance name, for instance `BB12001`. 
