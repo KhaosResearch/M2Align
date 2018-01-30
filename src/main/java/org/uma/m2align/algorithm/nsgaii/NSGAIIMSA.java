@@ -25,12 +25,7 @@ import java.util.stream.IntStream;
  */
 public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
 
-  private CountingMeasure evaluations;
-  private DurationMeasure durationMeasure;
-  private SimpleMeasureManager measureManager;
-
   private BasicMeasure<List<MSASolution>> solutionListMeasure;
-  private BasicMeasure<Integer> numberOfNonDominatedSolutionsInPopulation;
 
   /**
    * Constructor
@@ -92,7 +87,6 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
   protected void updateProgress() {
     evaluations.increment(getMaxPopulationSize());
     solutionListMeasure.push(getPopulation());
-    System.out.println("Evals: " + evaluations.get()) ;
   }
 
   @Override
@@ -100,27 +94,12 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
     return evaluations.get() >= maxEvaluations;
   }
 
-  @Override
-  public void run() {
-    durationMeasure.reset();
-    durationMeasure.start();
-    super.run();
-    durationMeasure.stop();
-  }
-
   /* Measures code */
   private void initMeasures() {
-    durationMeasure = new DurationMeasure();
     evaluations = new CountingMeasure(0);
-    numberOfNonDominatedSolutionsInPopulation = new BasicMeasure<>();
     solutionListMeasure = new BasicMeasure<>();
 
     measureManager = new SimpleMeasureManager();
-    measureManager.setPullMeasure("currentExecutionTime", durationMeasure);
-    measureManager.setPullMeasure("currentEvaluation", evaluations);
-    measureManager.setPullMeasure("numberOfNonDominatedSolutionsInPopulation",
-        numberOfNonDominatedSolutionsInPopulation);
-
     measureManager.setPushMeasure("currentPopulation", solutionListMeasure);
     measureManager.setPushMeasure("currentEvaluation", evaluations);
   }
