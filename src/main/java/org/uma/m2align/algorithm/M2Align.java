@@ -16,8 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class implementing the M2Align algorithm published in:
+ *
+ *
  * @author Antonio J. Nebro
- * @version 1.0
+ * @author Cristian Zambrano
+ * @version 1.1
  */
 public class M2Align extends NSGAIIMeasures<MSASolution> {
 
