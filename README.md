@@ -33,8 +33,9 @@ M2Align provides a utility to download the PDB structures files from the [Protei
 
 To execute this utility and get all the structural information requeried by STRIKE measure, run this command:
 
-````
+```
 java -cp target/m2align-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.m2align.strike.GenerateStructuralInformation sequencesFileName outputDirectory pathToStrike_contactgenerator
+
 ```
 
 * sequencesFileName: the filename of the sequences dataset (in FASTA Format). The names of the sequences must be correctly defined, because, the four first letters will be the `Sequence Key` or `PDB ID` to search the Structural Information (PDB) into the database of the Protein Data Bank.
