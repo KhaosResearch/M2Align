@@ -29,8 +29,10 @@ import org.uma.m2align.problem.BAliBASEMSAProblem;
 import org.uma.m2align.score.Score;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
 import org.uma.m2align.score.impl.StrikeScore;
+import org.uma.m2align.score.impl.SumOfPairs;
 import org.uma.m2align.solution.MSASolution;
 import org.uma.m2align.util.ChartContainer;
+import org.uma.m2align.util.distancematrix.impl.PAM250;
 
 /**
  * Class to configure and run the NSGA-II algorithm (variant with measures)
@@ -66,6 +68,7 @@ public class M2AlignBALIBASEWithChartsRunner  {
 
     StrikeScore objStrike = new StrikeScore();
     scoreList.add(objStrike);
+    //scoreList.add(new SumOfPairs(new PAM250())) ;
     scoreList.add(new PercentageOfAlignedColumnsScore());
     //scoreList.add(new PercentageOfNonGapsScore());
 

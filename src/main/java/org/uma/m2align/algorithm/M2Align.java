@@ -16,7 +16,11 @@ import org.uma.m2align.solution.MSASolution;
 
 /**
  * Class implementing the M2Align algorithm published in:
+ * M2Align: parallel multiple sequence alignment with a multi-objective metaheuristic
+ * Cristian Zambrano-Vega Antonio J. Nebro José García-Nieto José F. Aldana-Montes
+ * Bioinformatics, Volume 33, Issue 19, 1 October 2017, Pages 3011–3017.
  *
+ * DOI: https://doi.org/10.1093/bioinformatics/btx338
  *
  * @author Antonio J. Nebro
  * @author Cristian Zambrano
