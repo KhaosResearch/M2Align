@@ -7,10 +7,10 @@ import org.uma.m2align.util.distancematrix.DistanceMatrix;
 /**
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class SumOfPairs implements Score {
+public class SumOfPairsScore implements Score {
   private DistanceMatrix distanceMatrix;
 
-  public SumOfPairs(DistanceMatrix distanceMatrix) {
+  public SumOfPairsScore(DistanceMatrix distanceMatrix) {
     this.distanceMatrix = distanceMatrix;
   }
 

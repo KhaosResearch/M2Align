@@ -11,7 +11,7 @@ import org.uma.m2align.util.distancematrix.DistanceMatrix;
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
 
-public class WeightedSumOfPairs implements Score {
+public class WeightedSumOfPairsTest implements Score {
 
   public DistanceMatrix sustitutionMatrix;
   public MSADistance distanceMatrix;
@@ -20,7 +20,7 @@ public class WeightedSumOfPairs implements Score {
   public double weightGapExtend;
   double wSOP = Double.MIN_VALUE;
 
-  public WeightedSumOfPairs(DistanceMatrix sustitutionMatrix, double weightGapOpen,
+  public WeightedSumOfPairsTest(DistanceMatrix sustitutionMatrix, double weightGapOpen,
       double weightGapExtend) {
     this.sustitutionMatrix = sustitutionMatrix;
     distanceMatrix = new MSADistance();
