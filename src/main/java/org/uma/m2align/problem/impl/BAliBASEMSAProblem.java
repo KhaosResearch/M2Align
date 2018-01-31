@@ -1,12 +1,21 @@
-package org.uma.m2align.problem;
+package org.uma.m2align.problem.impl;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
+import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.score.Score;
 
+/**
+ * Class representing problems from the BAliBASE dataset
+ *
+ * @author Antonio J. Nebro
+ * @author Cristian Zambrano
+ *
+ * @version 1.0
+ */
 public class BAliBASEMSAProblem extends MSAProblem {
 
   public String PDBPath;

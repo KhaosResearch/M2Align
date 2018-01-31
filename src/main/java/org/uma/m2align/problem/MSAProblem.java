@@ -13,6 +13,7 @@ import org.biojava.nbio.core.sequence.io.FastaWriterHelper;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import org.uma.m2align.crossover.SPXMSACrossover;
+import org.uma.m2align.problem.DynamicallyComposedProblem;
 import org.uma.m2align.score.Score;
 import org.uma.m2align.solution.MSASolution;
 import org.uma.m2align.solution.util.ArrayChar;
@@ -93,10 +94,7 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
     if(listPreAlignments.size()<2){
         throw new JMetalException("More than one PreComputedAlignment is needed");
     }
-    //else{
-     //  System.out.println(listPreAlignments.size() + " PreComputedAlignments added");
-    //}
-            
+
     return listPreAlignments;
   }
 

@@ -25,14 +25,12 @@ import org.uma.m2align.algorithm.M2Align;
 import org.uma.m2align.algorithm.M2AlignBuilder;
 import org.uma.m2align.crossover.SPXMSACrossover;
 import org.uma.m2align.mutation.ShiftClosedGapsMSAMutation;
-import org.uma.m2align.problem.BAliBASEMSAProblem;
+import org.uma.m2align.problem.impl.BAliBASEMSAProblem;
 import org.uma.m2align.score.Score;
 import org.uma.m2align.score.impl.PercentageOfAlignedColumnsScore;
 import org.uma.m2align.score.impl.StrikeScore;
-import org.uma.m2align.score.impl.SumOfPairs;
 import org.uma.m2align.solution.MSASolution;
 import org.uma.m2align.util.ChartContainer;
-import org.uma.m2align.util.distancematrix.impl.PAM250;
 
 /**
  * Class to configure and run the NSGA-II algorithm (variant with measures)
