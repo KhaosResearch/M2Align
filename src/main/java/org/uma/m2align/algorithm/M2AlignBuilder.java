@@ -9,14 +9,15 @@ import org.uma.m2align.problem.MSAProblem;
 import org.uma.m2align.solution.MSASolution;
 
 /**
- * Created by ajnebro on 16/11/14.
+ * Builder class to configure the M2Align algorithm
+ *
+ * @author Antonio J. Nebro
  */
 public class M2AlignBuilder extends NSGAIIBuilder<MSASolution> {
 
   /**
    * M2AlignBuilder constructor
    */
-
   public M2AlignBuilder(Problem<MSASolution> problem,
       CrossoverOperator<MSASolution> crossoverOperator,
       MutationOperator<MSASolution> mutationOperator) {

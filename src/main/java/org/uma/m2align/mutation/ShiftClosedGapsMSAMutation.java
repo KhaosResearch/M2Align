@@ -6,6 +6,12 @@ import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import org.uma.m2align.solution.MSASolution;
 
+/**
+ * @author Antonio J. Nebro
+ * @author Cristian Zambrano
+ *
+ * @version 1.0 Implements the shift closed gaps mutation
+ */
 public class ShiftClosedGapsMSAMutation implements MutationOperator<MSASolution> {
   private double mutationProbability;
   private JMetalRandom randomGenerator;

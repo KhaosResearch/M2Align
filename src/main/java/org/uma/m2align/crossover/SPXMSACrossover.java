@@ -10,6 +10,8 @@ import org.uma.m2align.solution.MSASolution;
 
 /**
  * @author Antonio J. Nebro
+ * @author Cristian Zambrano
+ *
  * @version 1.0 Implements a single point crossover for MSA representation
  */
 public class SPXMSACrossover implements CrossoverOperator<MSASolution> {
