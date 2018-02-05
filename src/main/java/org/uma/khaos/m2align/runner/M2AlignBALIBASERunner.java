@@ -86,9 +86,8 @@ public class M2AlignBALIBASERunner {
 
     if (numberOfCores == 1) {
       evaluator = new SequentialSolutionListEvaluator<>();
-
     } else {
-      evaluator = new MultithreadedSolutionListEvaluator<MSASolution>(numberOfCores, problem);
+      evaluator = new MultithreadedSolutionListEvaluator<>(numberOfCores, problem);
     }
 
     algorithm = new M2AlignBuilder(problem, crossover, mutation)
@@ -119,7 +118,6 @@ public class M2AlignBALIBASERunner {
     varFile.setSeparator("\n");
     DefaultFileOutputContext funFile = new  DefaultFileOutputContext("FUN." + instance + ".tsv");
     funFile.setSeparator("\t");
-
    
     new SolutionListOutput(population)
             .setVarFileOutputContext(varFile)
@@ -127,6 +125,5 @@ public class M2AlignBALIBASERunner {
             .print();
 
     evaluator.shutdown();
-    
   }
 }

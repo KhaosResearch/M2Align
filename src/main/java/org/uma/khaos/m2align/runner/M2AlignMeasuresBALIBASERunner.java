@@ -151,9 +151,9 @@ public class M2AlignMeasuresBALIBASERunner {
     private int counter = 0 ;
 
     @Override  public void measureGenerated(List<MSASolution> solutions) {
-      System.out.println("PUSH MEASURE. Counter = " + counter+ " First solution: " + solutions.get(0)) ;
+      System.out.println("Counter = " + counter+ " First solution: " + solutions.get(0)) ;
       if ((counter % 10 == 0)) {
-        System.out.println("PUSH MEASURE. Counter = " + counter+ " First solution: " + solutions.get(0)) ;
+        System.out.println("Counter = " + counter+ " First solution: " + solutions.get(0)) ;
       }
       counter ++ ;
     }
@@ -161,9 +161,8 @@ public class M2AlignMeasuresBALIBASERunner {
 
   private static class IterationListener implements MeasureListener<Long> {
     @Override  public void measureGenerated(Long value) {
-      System.out.println("PUSH MEASURE. Iteration: " + value) ;
       if ((value % 50 == 0)) {
-        System.out.println("PUSH MEASURE. Iteration: " + value) ;
+        System.out.println("Iteration: " + value) ;
       }
     }
   }
