@@ -10,6 +10,7 @@ import org.uma.jmetal.measure.impl.SimpleMeasureManager;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
+import org.uma.jmetal.util.comparator.DominanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.khaos.m2align.problem.MSAProblem;
 import org.uma.khaos.m2align.solution.MSASolution;
@@ -41,7 +42,7 @@ public class M2Align extends NSGAIIMeasures<MSASolution> {
       SelectionOperator<List<MSASolution>, MSASolution> selectionOperator,
       SolutionListEvaluator<MSASolution> evaluator) {
     super(problem, maxEvaluations, populationSize, crossoverOperator, mutationOperator,
-        selectionOperator, evaluator);
+        selectionOperator, new DominanceComparator<>(), evaluator);
 
     initMeasures();
   }

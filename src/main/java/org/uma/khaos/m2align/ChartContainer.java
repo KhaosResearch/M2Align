@@ -116,21 +116,11 @@ public class ChartContainer<S extends Solution<?>> {
           this.getSolutionsForObjective(solutionList, this.objective2),
           null);
 
-      System.out.println("Iter: " + updateCounter);
       for (int i = 0; i < solutionList.size(); i++) {
         S s = solutionList.get(i);
       }
-      System.out.println() ;
-      System.out.println() ;
-      System.out.println() ;
-
-      new SolutionListOutput(solutionList)
-          .setSeparator("\t")
-          .setFunFileOutputContext(new DefaultFileOutputContext("" + updateCounter + ".tsv"))
-          .print();
 
       updateCounter++ ;
-
     }
   }
 

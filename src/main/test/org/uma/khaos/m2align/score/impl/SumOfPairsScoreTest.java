@@ -9,44 +9,46 @@ import org.uma.khaos.m2align.solution.MSASolution;
 import org.uma.khaos.m2align.util.distancematrix.impl.PAM250;
 
 public class SumOfPairsScoreTest {
-    private static final double EPSILON = 0.00000000001 ;
-    private SumOfPairsScore objective ;
 
-    @Mocked
-    MSASolution solution;
+  private static final double EPSILON = 0.00000000001;
+  private SumOfPairsScore objective;
 
-    @Before
-    public void startup() {
-      objective = new SumOfPairsScore(new PAM250()) ;
-    }
+  @Mocked
+  MSASolution solution;
 
-    @Test
-    public void shouldThreeIdenticalSequencesReturn12() {
-      double expectedValue = 12;
-      double receivedValue = objective.compute(solution, new char[][]{{'A', 'A'}, {'A', 'A'}, {'A', 'A'}});
+  @Before
+  public void startup() {
+    objective = new SumOfPairsScore(new PAM250());
+  }
 
-      assertEquals(expectedValue, receivedValue, EPSILON);
-    }
+  @Test
+  public void shouldThreeIdenticalSequencesReturn12() {
+    double expectedValue = 12;
+    double receivedValue = objective
+        .compute(solution, new char[][]{{'A', 'A'}, {'A', 'A'}, {'A', 'A'}});
 
-    @Test
-    public void shouldTwoSequencesOneWithGapsReturnMinus11() {
-      double expectedValue = -11;
-      double receivedValue = objective.compute(solution, new char[][]{{'F', 'A'}, {'A', '-'}});
+    assertEquals(expectedValue, receivedValue, EPSILON);
+  }
 
-      assertEquals(expectedValue, receivedValue, EPSILON);
-    }
+  @Test
+  public void shouldTwoSequencesOneWithGapsReturnMinus11() {
+    double expectedValue = -11;
+    double receivedValue = objective.compute(solution, new char[][]{{'F', 'A'}, {'A', '-'}});
 
-    @Test
-    public void shouldTwoSequencesWithOnlyGapsReturn3() {
-      double expectedValue = 3;
-      double receivedValue = objective.compute(solution, new char[][]{{'-', '-', '-'}, {'-', '-', '-'}});
+    assertEquals(expectedValue, receivedValue, EPSILON);
+  }
 
-      assertEquals(expectedValue, receivedValue, EPSILON);
-    }
+  @Test
+  public void shouldTwoSequencesWithOnlyGapsReturn3() {
+    double expectedValue = 3;
+    double receivedValue = objective
+        .compute(solution, new char[][]{{'-', '-', '-'}, {'-', '-', '-'}});
 
-    @Test(expected = org.uma.jmetal.util.JMetalException.class)
-    public void shouldRaiseExceptionWhenInvalidCharacterIsInTheSequence() {
-      objective.compute(solution, new char[][]{{'?'}, {'A'}});
-    }
+    assertEquals(expectedValue, receivedValue, EPSILON);
+  }
 
+  @Test(expected = org.uma.jmetal.util.JMetalException.class)
+  public void shouldRaiseExceptionWhenInvalidCharacterIsInTheSequence() {
+    objective.compute(solution, new char[][]{{'?'}, {'A'}});
+  }
 }
