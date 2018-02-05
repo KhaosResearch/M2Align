@@ -29,6 +29,7 @@ import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
+import org.uma.khaos.m2align.algorithm.M2Align;
 import org.uma.khaos.m2align.algorithm.M2AlignBuilder;
 import org.uma.khaos.m2align.crossover.SPXMSACrossover;
 import org.uma.khaos.m2align.mutation.ShiftClosedGapsMSAMutation;
@@ -55,7 +56,7 @@ public class M2AlignBALIBASERunner {
     Algorithm<List<MSASolution>> algorithm;
     CrossoverOperator<MSASolution> crossover;
     MutationOperator<MSASolution> mutation;
-    SelectionOperator selection;
+    SelectionOperator<List<MSASolution>, MSASolution> selection;
 
     if (args.length != 5) {
       throw new JMetalException("Wrong number of arguments") ;
@@ -68,7 +69,7 @@ public class M2AlignBALIBASERunner {
     
     crossover = new SPXMSACrossover(0.8);
     mutation = new ShiftClosedGapsMSAMutation(0.2);
-    selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
+    selection = new BinaryTournamentSelection<>(new RankingAndCrowdingDistanceComparator<>());
 
     List<Score> scoreList = new ArrayList<>();
 

@@ -47,7 +47,7 @@ public class M2AlignBALIBASEWithChartsRunner  {
     Algorithm<List<MSASolution>> algorithm;
     CrossoverOperator<MSASolution> crossover;
     MutationOperator<MSASolution> mutation;
-    SelectionOperator selection;
+    SelectionOperator<List<MSASolution>, MSASolution> selection;
 
     if (args.length != 5) {
       throw new JMetalException("Wrong number of arguments") ;
@@ -60,7 +60,7 @@ public class M2AlignBALIBASEWithChartsRunner  {
 
     crossover = new SPXMSACrossover(0.8);
     mutation = new ShiftClosedGapsMSAMutation(0.2);
-    selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
+    selection = new BinaryTournamentSelection<>(new RankingAndCrowdingDistanceComparator<>());
 
     List<Score> scoreList = new ArrayList<>();
 
