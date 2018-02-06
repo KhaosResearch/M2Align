@@ -101,3 +101,6 @@ kalign -c input -f fasta -q -i FASTA_FILE -o FASTA_FILE_kalign
 probcons FASTA_FILE > FASTA_FILE_probcons
 fsa --refinement 100 FASTA_FILE > FASTA_FILE_fsa
 ```
+
+## Web based tools for visualizing alingments
+* [Alignment Annotator](http://www.bioinformatics.org/strap/aa/)
