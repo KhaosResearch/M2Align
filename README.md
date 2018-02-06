@@ -104,3 +104,4 @@ fsa --refinement 100 FASTA_FILE > FASTA_FILE_fsa
 
 ## Web based tools for visualizing alingments
 * [Alignment Annotator](http://www.bioinformatics.org/strap/aa/)
+* [MSAViewer](http://msa.biojs.net/app/)
