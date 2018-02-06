@@ -102,6 +102,6 @@ probcons FASTA_FILE > FASTA_FILE_probcons
 fsa --refinement 100 FASTA_FILE > FASTA_FILE_fsa
 ```
 
-## Web based tools for visualizing alingments
+## Web based tools for visualizing alignments
 * [Alignment Annotator](http://www.bioinformatics.org/strap/aa/)
 * [MSAViewer](http://msa.biojs.net/app/)
