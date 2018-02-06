@@ -102,6 +102,38 @@ probcons FASTA_FILE > FASTA_FILE_probcons
 fsa --refinement 100 FASTA_FILE > FASTA_FILE_fsa
 ```
 
+## Example Solving BB11003 dataset of BAliBASE
+
+Given the set of unligned protein sequences from BAliBASE (BB11003.tfa), to generate multiobjetive multiple sequence alignment with M2Align, follow next steps:
+
+* Downdoad the PDB files of the protein sequences 
+	Go to https://www.rcsb.org/ and search by PDB ID: 1ad3, 1uzb, 1eyy and 1o20
+
+* Save the downloaded .pdb files into a same directory, "example"
+
+* Generate the contact files of these 4 PDB files, using the STRIKE Contact Matrix Generator, with these commands
+
+```
+STRIKECONTACTGENERATOR_PATH/bin/strike_pdbcontactsgenerator 1ad3_A 1ad3_A.pdb A ./
+STRIKECONTACTGENERATOR_PATH/bin/strike_pdbcontactsgenerator 1o20_A 1o20_A.pdb A ./
+STRIKECONTACTGENERATOR_PATH/bin/strike_pdbcontactsgenerator 1eyy_A 1eyy_A.pdb A ./
+STRIKECONTACTGENERATOR_PATH/bin/strike_pdbcontactsgenerator 1uzb_A 1uzb_A.pdb A ./
+```
+ 
+The contacts files must be created: 1ad3_A.contacts, 1o20_A.contacts, 1eyy_A.contacts and 1uzb_A.contacts.
+ 
+* Generate the Pre-alignments using state-of-the-art MSA software
+ 
+To create the pre-alignments for the initial population of the algorithm, run the script gen_prealignments.sh of the example folder
+```
+ ./gen_prealignments.sh
+```
+
+* Finally execute M2Align using the command:
+```
+java -cp target/m2align-1.3-SNAPSHOT-jar-with-dependencies.jar org.uma.khaos.m2align.runner.M2AlignRunner example/BB11003.tfa example/pdb/ BB11003.tfa_clu-BB11003.tfa_fsa-BB11003.fasta_aln-BB11003.tfa_probcons-BB11003.tfa_kalign 25000 100 8
+```
+
 ## Web based tools for visualizing alignments
 * [Alignment Annotator](http://www.bioinformatics.org/strap/aa/)
 * [MSAViewer](http://msa.biojs.net/app/)
