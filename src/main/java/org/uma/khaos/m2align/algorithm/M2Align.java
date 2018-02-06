@@ -122,11 +122,11 @@ public class M2Align extends NSGAIIMeasures<MSASolution> {
 
   @Override
   public String getName() {
-    return "NSGAIIMSA";
+    return "M2Align";
   }
 
   @Override
   public String getDescription() {
-    return "NSGAIIMSA";
+    return "M2Align";
   }
 }

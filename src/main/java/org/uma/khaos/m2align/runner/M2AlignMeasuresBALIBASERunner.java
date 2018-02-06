@@ -80,7 +80,7 @@ public class M2AlignMeasuresBALIBASERunner {
     StrikeScore objStrike = new StrikeScore();
     scoreList.add(objStrike);
     scoreList.add(new PercentageOfAlignedColumnsScore());
-    scoreList.add(new PercentageOfNonGapsScore());
+    //scoreList.add(new PercentageOfNonGapsScore());
 
     problem = new BAliBASEMSAProblem(instance, dataDirectory, scoreList);
 
@@ -151,10 +151,11 @@ public class M2AlignMeasuresBALIBASERunner {
     private int counter = 0 ;
 
     @Override  public void measureGenerated(List<MSASolution> solutions) {
-      System.out.println("Counter = " + counter+ " First solution: " + solutions.get(0)) ;
       if ((counter % 10 == 0)) {
-        System.out.println("Counter = " + counter+ " First solution: " + solutions.get(0)) ;
-      }
+        new SolutionListOutput(solutions)
+            .setVarFileOutputContext(new DefaultFileOutputContext("VAR" + counter + ".tsv"))
+            .setFunFileOutputContext(new DefaultFileOutputContext("FUN" + counter + ".tsv"))
+            .print();      }
       counter ++ ;
     }
   }

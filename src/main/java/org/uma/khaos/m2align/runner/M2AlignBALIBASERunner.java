@@ -113,11 +113,12 @@ public class M2AlignBALIBASERunner {
         }
       }
     }
-       
+
     DefaultFileOutputContext varFile = new  DefaultFileOutputContext("VAR." + instance + ".tsv");
     varFile.setSeparator("\n");
     DefaultFileOutputContext funFile = new  DefaultFileOutputContext("FUN." + instance + ".tsv");
     funFile.setSeparator("\t");
+
    
     new SolutionListOutput(population)
             .setVarFileOutputContext(varFile)
@@ -125,5 +126,6 @@ public class M2AlignBALIBASERunner {
             .print();
 
     evaluator.shutdown();
+
   }
 }

@@ -21,6 +21,8 @@ import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
+import org.uma.jmetal.util.fileoutput.SolutionListOutput;
+import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.khaos.m2align.algorithm.M2Align;
 import org.uma.khaos.m2align.algorithm.M2AlignBuilder;
 import org.uma.khaos.m2align.crossover.SPXMSACrossover;
@@ -114,6 +116,8 @@ public class M2AlignBALIBASEWithChartsRunner  {
     long computingTime = algorithmRunner.getComputingTime();
 
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
+
+    System.exit(-1) ;
   }
 
   private static class ChartListener implements MeasureListener<List<MSASolution>> {
